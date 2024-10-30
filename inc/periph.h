@@ -1,45 +1,62 @@
 //
-// Created by marijn on 9/7/24.
+// Created by marijn on 10/30/24.
 //
 
-#ifndef ARM_BOOTLOADER_PERIPH_H
-#define ARM_BOOTLOADER_PERIPH_H
+#ifndef STM32WB07_PERIPH_H
+#define STM32WB07_PERIPH_H
+#include "memory_map.h"
+#include "types.h"
+
+
+/*!< AHB peripherals */
+#define GPIOA					((GPIO_t*)GPIOA_BASE)
+#define GPIOB					((GPIO_t*)GPIOB_BASE)
+#define RCC						((RCC_t*)RCC_BASE)
 
 
 /*!<
- * core hardware memory map
+ * core peripheral types
  * */
-#define SCS_BASE			(0xE000E000UL)
-#define ITM_BASE			(0xE0000000UL)
-#define DWT_BASE			(0xE0001000UL)
-#define TPI_BASE			(0xE0040000UL)
-#define CORE_DEBUG_BASE		(0xE000EDF0UL)
-
-#define SYS_TICK_BASE		(SCS_BASE +  0x0010UL)
-#define NVIC_BASE			(SCS_BASE +  0x0100UL)
-#define SCB_BASE			(SCS_BASE +  0x0D00UL)
-
-
-/*!<
- * extended hardware memory map
- * */
-#define FLASH_BASE			0x08000000UL
-#define SRAM_BASE			0x20000000UL
-#define PERIPH_BASE			0x40000000UL
-
-#define APB1PERIPH_BASE		PERIPH_BASE
-#define APB2PERIPH_BASE		(PERIPH_BASE + 0x00010000UL)
-#define AHB1PERIPH_BASE		(PERIPH_BASE + 0x00020000UL)
-#define AHB2PERIPH_BASE		(PERIPH_BASE + 0x10000000UL)
+/*!< GPIO */
+typedef struct {
+	_IO uint32_t	MODER;			/* port mode                         0x00 */
+	_IO uint32_t	OTYPER;			/* port output type                  0x04 */
+	_IO uint32_t	OSPEEDR;		/* port output speed                 0x08 */
+	_IO uint32_t	PUPDR;			/* port pull-up/pull-down            0x0C */
+	_IO uint32_t	IDR;			/* port input data                   0x10 */
+	_IO uint32_t	ODR;			/* port output data                  0x14 */
+	_IO uint32_t	BSRR;			/* port bit set/reset                0x18 */
+	_IO uint32_t	LCKR;			/* port configuration lock           0x1C */
+	_IO uint32_t	AFR[2];			/* alternate function           0x20-0x24 */
+} GPIO_t;
 
 
-/*!< APB1 */
+typedef struct {
+	_IO uint32_t  CR;
+	_IO uint32_t  ICSCR;
+	_IO uint32_t  CFGR;
+	_IO uint32_t  CSSWCR;
+	_IO uint32_t  RESERVED[2];
+	_IO uint32_t  CIER;
+	_IO uint32_t  CIFR;
+	_IO uint32_t  CSCMDR;
+	_IO uint32_t  RESERVED1[3];
+	_IO uint32_t  AHBRSTR;
+	_IO uint32_t  APB0RSTR;
+	_IO uint32_t  APB1RSTR;
+	_IO uint32_t  RESERVED2;
+	_IO uint32_t  APB2RSTR;
+	_IO uint32_t  RESERVED3[3];
+	_IO uint32_t  AHBENR;
+	_IO uint32_t  APB0ENR;
+	_IO uint32_t  APB1ENR;
+	_IO uint32_t  RESERVED4;
+	_IO uint32_t  APB2ENR;
+	_IO uint32_t  RESERVED5[12];
+	_IO uint32_t  CSR;
+	_IO uint32_t  RFSWHSECR;
+	_IO uint32_t  RFHSECR;
+} RCC_t;
 
-/*!< APB2 */
 
-/*!< AHB1 */
-
-/*!< AHB2 */
-
-
-#endif //ARM_BOOTLOADER_PERIPH_H
+#endif //STM32WB07_PERIPH_H
