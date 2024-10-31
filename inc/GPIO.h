@@ -41,8 +41,8 @@ extern GPIO_t* int_to_GPIO(uint8_t num);
 extern void enable_GPIO(GPIO_t* port);
 extern void disable_GPIO(GPIO_t* port);
 extern void reset_GPIO(GPIO_t* port, uint8_t pin);
-extern void fconfig_GPIO(GPIO_t* port, uint8_t pin, GPIO_MODE_t mode, GPIO_PULL_t pull, GPIO_OT_t output_type, GPIO_SPEED_t speed, uint8_t alternate_function); // TODO: flags
-extern void config_GPIO(GPIO_t* port, uint8_t pin, GPIO_MODE_t mode, GPIO_PULL_t pull, GPIO_OT_t output_type);  // TODO: flags
+extern void fconfig_GPIO(GPIO_t* port, uint8_t pin, uint32_t flags, uint8_t alternate_function);
+extern void config_GPIO(GPIO_t* port, uint8_t pin, uint32_t flags);
 /*!< output */
 extern void GPIO_write(GPIO_t* port, uint8_t pin, uint8_t data);
 extern void GPIO_toggle(GPIO_t* port, uint8_t pin);

@@ -4,12 +4,14 @@
 //b1
 // application
 void main(void) {
-	uint32_t a = GPIO_to_int(GPIOB);
-	config_GPIO(GPIOB, 0, GPIO_output, GPIO_no_pull, GPIO_push_pull);
-	config_GPIO(GPIOB, 1, GPIO_output, GPIO_no_pull, GPIO_push_pull);
+	config_GPIO(GPIOB, 0, GPIO_output);
+	config_GPIO(GPIOB, 1, GPIO_output);
+	config_GPIO(GPIOB, 2, GPIO_output);
 
 	for (;;) {
 		GPIO_toggle(GPIOB, 0);
 		GPIO_toggle(GPIOB, 1);
+		GPIO_toggle(GPIOB, 2);
+		for (_IO uint32_t i = 0; i < 0xFFFF; i++);
 	}
 }
