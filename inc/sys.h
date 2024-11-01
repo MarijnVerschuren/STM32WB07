@@ -70,7 +70,7 @@ void sys_init(uint32_t flags);
 void sys_reset(void);				// TODO: assembly
 
 void delay_ms(uint64_t ms);
-void sys_scale_clock(SYS_CLK_SPEED_t scale);
+void sys_scale_clock(SYS_FLAG_t scale);
 
 
 

@@ -57,10 +57,13 @@ add_executable(${PROJECT_NAME}
     src/vector.s
     src/startup.s
 
+    src/GPIO.S
+
     src/GPIO.c
     src/main.c
     src/sys.c
     src/RF.c
+    src/EXTI.c
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -154,9 +154,9 @@ void delay_ms(uint64_t ms) {
 	while (tick - start < ms);
 }
 
-void sys_scale_clock(SYS_CLK_SPEED_t speed) {
+void sys_scale_clock(SYS_FLAG_t speed) {
 	RCC->CSCMDR |= (
-		(speed << 1U) 	|
+		(((speed >> 10) & 0b111UL) << 1U) 	|
 		0b1UL
 	);
 	while(RCC->CSCMDR & 0b1U);

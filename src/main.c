@@ -11,17 +11,28 @@ void main(void) {
 	);
 
 	config_GPIO(GPIOB, 0, GPIO_output);		// B
-	config_GPIO(GPIOB, 2, GPIO_output);		// R
 	config_GPIO(GPIOB, 4, GPIO_output);		// G
+	config_GPIO(GPIOB, 2, GPIO_output);		// R
 
-
-	for (;;) {
+	delay_ms(100);
+	for (uint8_t i = 0; i < 12; i++) {
 		GPIO_toggle(GPIOB, 0);
-		GPIO_toggle(GPIOB, 2);
+		delay_ms(50);
 		GPIO_toggle(GPIOB, 4);
+		delay_ms(50);
+		GPIO_toggle(GPIOB, 2);
+		delay_ms(50);
+	}
 
+	delay_ms(200);
+	for (uint8_t i = 0; i < 10; i++) {
+		GPIO_toggle(GPIOB, 0);
+		GPIO_toggle(GPIOB, 4);
+		GPIO_toggle(GPIOB, 2);
 		delay_ms(100);
 	}
+
+	sys_restart();
 }
 
 // TODO: (LP)uart I2C, SPI kernel frequencies

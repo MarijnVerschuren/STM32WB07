@@ -1,16 +1,9 @@
 //
 // Created by marijn on 2/13/23.
 //
+
 #include "GPIO.h"
 
-
-/*!< misc */
-uint8_t GPIO_to_int(GPIO_t* port) {
-	return (((uint32_t)(port - AHBPERIPH_BASE) >> 20U) & 0b1U) + 2U;
-}
-GPIO_t* int_to_GPIO(uint8_t num) {
-	return (GPIO_t*)((((num - 2U) & 0x1U) << 20U) + AHBPERIPH_BASE);
-}
 
 /*!< init / disable */
 void enable_GPIO(GPIO_t* port) {
