@@ -29,7 +29,6 @@ IVT:
 // default handler
 .section .text.default_handler, "ax", %progbits
 default_handler:
-	//bkpt #1
 	b default_handler
 .size default_handler, .-default_handler
 

@@ -1,4 +1,5 @@
 SECTIONS {
+	_vector_table = LOADADDR(.vector);
 	. = ORIGIN(FLASH);
 
 	.vector ALIGN(4) : {

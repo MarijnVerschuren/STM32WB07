@@ -57,8 +57,8 @@ typedef struct {
 	_IO uint32_t	SCR;			/* system control                    0x10 */
 	_I	uint32_t	CCR;			/* configuration and control         0x14 */
 	_I	uint32_t	_;				/*                                   0x18 */
-	_IO uint32_t	SHPR2;			/* system handler priority 2         0x1C */
-	_IO uint32_t	SHPR3;			/* system handler priority 3         0x20 */
+	_IO uint32_t	SHP[2];			/* system handler priority    0x1C - 0x20 */
+	_IO uint32_t	SHCSR;			/* system handler status and control 0x24 */
 } SCB_t;
 
 
@@ -93,53 +93,53 @@ typedef struct {
 } RCC_t;
 
 /*!< PWR */
-typedef struct {	// TODO comments
-	_IO uint32_t  CR1;
-	_IO uint32_t  CR2;
-	_IO uint32_t  CR3;
-	_IO uint32_t  CR4;
-	_IO uint32_t  SR1;
-	_IO uint32_t  SR2;
-	_IO uint32_t  _0;
-	_IO uint32_t  CR5;
-	_IO uint32_t  PUCRA;
-	_IO uint32_t  PDCRA;
-	_IO uint32_t  PUCRB;
-	_IO uint32_t  PDCRB;
-	_IO uint32_t  CR6;
-	_IO uint32_t  CR7;
-	_IO uint32_t  SR3;
-	_IO uint32_t  _1;
-	_IO uint32_t  IOxCFG;
-	_IO uint32_t  _2[16];
-	_IO uint32_t  DBGR;
-	_IO uint32_t  EXTSRR;
-	_IO uint32_t  DBGSMPS;
-	_IO uint32_t  TRIMR;
-	_IO uint32_t  ENGTRIM;
-	_IO uint32_t  DBG1;
-	_IO uint32_t  DBG2;
+typedef struct {	// TODO find last 5 register names
+	_IO uint32_t  CR1;				/* control  1						 0x00 */
+	_IO uint32_t  CR2;				/* control  2						 0x04 */
+	_IO uint32_t  CR3;				/* control  3						 0x08 */
+	_IO uint32_t  CR4;				/* control  4						 0x0C */
+	_IO uint32_t  SR1;				/* status  1						 0x10 */
+	_IO uint32_t  SR2;				/* status  2						 0x14 */
+	_IO uint32_t  _0;				/*									 0x18 */
+	_IO uint32_t  CR5;				/* control  5						 0x1C */
+	_IO uint32_t  PUCRA;			/* port A pull-up control 		     0x20 */
+	_IO uint32_t  PDCRA;			/* port A pull-down control			 0x24 */
+	_IO uint32_t  PUCRB;			/* port B pull-up control 			 0x28 */
+	_IO uint32_t  PDCRB;			/* port B pull-down control 		 0x2C */
+	_IO uint32_t  CR6;				/* control  6						 0x30 */
+	_IO uint32_t  CR7;				/* control  7						 0x34 */
+	_IO uint32_t  SR3;				/* status  3						 0x38 */
+	_IO uint32_t  _1;				/*									 0x3C */
+	_IO uint32_t  IOxCFG;			/* I/O deepstop drive configuration  0x40 */
+	_IO uint32_t  _2[16];			/*  						  0x44 - 0x80 */
+	_IO uint32_t  DBGR;				/* debug 							 0x84 */
+	_IO uint32_t  EXTSRR;			/* extended status and reset		 0x88 */
+	_IO uint32_t  DBGSMPS;			/*									 0x8C */
+	_IO uint32_t  TRIMR;			/*									 0x90 */
+	_IO uint32_t  ENGTRIM;			/*									 0x94 */
+	_IO uint32_t  DBG1;				/*									 0x98 */
+	_IO uint32_t  DBG2;				/*									 0x9C */
 } PWR_t;
 
 /*!< FLASH */
-typedef struct {	// TODO comments
-	_IO uint32_t  COMMAND;
-	_IO uint32_t  CONFIG;
-	_IO uint32_t  IRQSTAT;
-	_IO uint32_t  IRQMASK;
-	_IO uint32_t  IRQRAW;
-	_IO uint32_t  SIZE;
-	_IO uint32_t  ADDRESS;
-	_IO uint32_t  _0[2];
-	_IO uint32_t  LFSRVAL;
-	_IO uint32_t  _1[3];
-	_IO uint32_t  PAGEPROT0;
-	_IO uint32_t  PAGEPROT1;
-	_IO uint32_t  _2;
-	_IO uint32_t  DATA0;
-	_IO uint32_t  DATA1;
-	_IO uint32_t  DATA2;
-	_IO uint32_t  DATA3;
+typedef struct {
+	_IO uint32_t  COMMAND;			/* command 							 0x00 */
+	_IO uint32_t  CONFIG;			/* configuration					 0x04 */
+	_IO uint32_t  IRQSTAT;			/* interrupt state					 0x08 */
+	_IO uint32_t  IRQMASK;			/* interrupt mask					 0x0C */
+	_IO uint32_t  IRQRAW;			/* raw status						 0x10 */
+	_IO uint32_t  SIZE;				/* size								 0x14 */
+	_IO uint32_t  ADDRESS;			/* address							 0x18 */
+	_IO uint32_t  _0[2];			/*							  0x1C - 0x20 */
+	_IO uint32_t  LFSRVAL;			/* linear feedback shift		     0x24 */
+	_IO uint32_t  _1[3];			/*							  0x28 - 0x30 */
+	_IO uint32_t  PAGEPROT0;		/* flash page protection 1		     0x34 */
+	_IO uint32_t  PAGEPROT1;		/* flash page protection 2		     0x38 */
+	_IO uint32_t  _2;				/*								     0x3C */
+	_IO uint32_t  DATA0;			/* data 0						     0x40 */
+	_IO uint32_t  DATA1;			/* data 1						     0x44 */
+	_IO uint32_t  DATA2;			/* data 2						     0x48 */
+	_IO uint32_t  DATA3;			/* data 3						     0x4C */
 } FLASH_t;
 
 /*!< GPIO */

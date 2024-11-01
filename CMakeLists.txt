@@ -10,7 +10,7 @@ set(CMAKE_TOOLCHAIN_FILE "cmake/arm-none-eabi.cmake")
 set(LINKER_SCRIPT "lnk/STM32WB07.ld")
 
 # define CPU OPTIONS
-set(CPU_OPTIONS -mthumb)
+set(CPU_OPTIONS -mthumb -mcpu=cortex-m0plus)
 
 # optimizations (-O0 -O1 -O2 -O3 -Os -Ofast -Og -flto)
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g -DDEBUG")

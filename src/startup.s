@@ -20,7 +20,7 @@
 reset_handler:
 	ldr r0, =_stack_end				// set stack pointer
 	mov sp, r0
-	//bl sys_reset					// reset system state
+	bl sys_reset					// reset system state
 
 	// copy_data
 	ldr r0, =_data_load				// src
