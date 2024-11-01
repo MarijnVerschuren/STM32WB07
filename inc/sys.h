@@ -14,83 +14,34 @@
  * */
 typedef enum {
 	HSE_ENABLE =				0b1U << 0U,
-	HSE_DISABLE =				0b0U << 0U
-} HSE_enable_t;
-
-typedef enum {
 	PLL_ENABLE =				0b1U << 1U,
-	PLL_DISABLE =				0b0U << 1U
-} PLL_enable_t;
-
-typedef enum {
 	PLL64_buffer_ENABLE =		0b1U << 2U,
-	PLL64_buffer_DISABLE =		0b0U << 2U
-} PLL64_buffer_t;
-
-typedef enum {
 	LSI_ENABLE = 				0b1U << 3U,
-	LSI_DISABLE = 				0b0U << 3U
-} LSI_enable_t;
-
-typedef enum {
 	LSE_ENABLE = 				0b1U << 4U,
-	LSE_DISABLE = 				0b0U << 4U
-} LSE_enable_t;
-
-typedef enum {
 	LSE_BYP_ENABLE = 			0b1U << 5U,
-	LSE_BYP_DISABLE = 			0b0U << 5U
-} LSE_BYP_enable_t;
-
-typedef enum {
 	IO_BOOST_ENABLE =			0b1U << 6U,
-	IO_BOOST_DISABLE =			0b0U <<	6U
-} IO_boost_t;
-
-typedef enum {
 	LS_CLK_SRC_LSI_LPMU = 		0b00U << 7U,
 	LS_CLK_SRC_LSE = 			0b01U << 7U,
 	LS_CLK_SRC_LSI = 			0b10U << 7U,
-	LS_CLK_SRC_HSI_DIV_2048 = 	0b11U << 7U
-} LS_CLK_SRC_t;
-
-typedef enum {
+	LS_CLK_SRC_HSI_DIV_2048 = 	0b11U << 7U,
 	SMPS_CLK_SPEED_8MHz =		0b0U << 9U,
-	SMPS_CLK_SPEED_4MHz =		0b1U << 9U
-} SMPS_CLK_SPEED_t;
-
-typedef enum {
+	SMPS_CLK_SPEED_4MHz =		0b1U << 9U,
 	SYS_CLK_SPEED_64MHz = 		0b000U << 10U,
 	SYS_CLK_SPEED_32MHz = 		0b001U << 10U,
 	SYS_CLK_SPEED_16MHz = 		0b010U << 10U,
 	SYS_CLK_SPEED_8MHz = 		0b011U << 10U,
 	SYS_CLK_SPEED_4MHz = 		0b100U << 10U,
 	SYS_CLK_SPEED_2MHz = 		0b101U << 10U,
-	SYS_CLK_SPEED_1MHz = 		0b110U << 10U
-} SYS_CLK_SPEED_t;
-
-typedef enum {
-	HSI_BLOCK_DISABLE =			0b1U << 13U
-} HSI_BLOCK_DISABLE_t;
-
-typedef enum {
+	SYS_CLK_SPEED_1MHz = 		0b110U << 10U,
+	HSI_BLOCK_DISABLE =			0b1U << 13U,
 	SYS_CLK_SRC_PLL = 			0b0U << 14U,
 	SYS_CLK_SRC_HSI = 			0b0U << 14U,
-	SYS_CLK_SRC_HSE = 			0b1U << 14U
-} SYS_CLK_SRC_t;
-
-typedef enum {
+	SYS_CLK_SRC_HSE = 			0b1U << 14U,
 	SMPS_clk_invert_ENABLE =	0b1U << 15U,
-	SMPS_clk_invert_DISABLE =	0b0U <<	15U
-} SMPS_clk_invert_t;
-
-typedef enum {
 	SYS_TICK_ENABLE =			0b1U << 16U,
-} SYS_TICK_EN_t;
-
-typedef enum {
 	SYS_TICK_INT_ENABLE =		0b1U << 17U,
-} SYS_TICK_INT_EN_t;
+} SYS_FLAG_t;
+
 
 /*!<
  * constants

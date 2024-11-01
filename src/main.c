@@ -5,7 +5,6 @@
 //b1
 // application
 void main(void) {
-	//SCB->VTOR = 0x10040000UL << 7;
 	sys_init(
 		HSE_ENABLE | PLL_ENABLE | PLL64_buffer_ENABLE | SYS_CLK_SPEED_64MHz |
 		SYS_CLK_SRC_PLL | SYS_TICK_ENABLE | SYS_TICK_INT_ENABLE

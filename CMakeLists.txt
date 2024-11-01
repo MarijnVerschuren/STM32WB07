@@ -60,6 +60,7 @@ add_executable(${PROJECT_NAME}
     src/GPIO.c
     src/main.c
     src/sys.c
+    src/RF.c
 )
 
 target_link_libraries(${PROJECT_NAME}
