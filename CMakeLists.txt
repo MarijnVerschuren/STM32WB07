@@ -59,11 +59,12 @@ add_executable(${PROJECT_NAME}
 
     src/GPIO.S
 
-    src/GPIO.c
-    src/main.c
+    src/NVIC.c
     src/sys.c
-    src/RF.c
+    src/GPIO.c
     src/EXTI.c
+    src/RF.c
+    src/main.c
 )
 
 target_link_libraries(${PROJECT_NAME}

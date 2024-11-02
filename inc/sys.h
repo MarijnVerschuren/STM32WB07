@@ -4,7 +4,7 @@
 
 #ifndef STM32WB07_SYS_H
 #define STM32WB07_SYS_H
-#include "vector.h"
+#include "NVIC.h"
 #include "periph.h"
 #include "GPIO.h"
 

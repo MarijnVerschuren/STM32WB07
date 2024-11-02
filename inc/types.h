@@ -22,5 +22,18 @@ typedef unsigned long long	uint64_t;
 
 #define NULL ((void*)0x00000000UL)
 
+// TODO: assemble all functions that contain these
+__attribute__((always_inline)) static inline void __NOP(void) {
+	__asm volatile ("nop");
+}
+__attribute__((always_inline)) static inline void __ISB(void) {
+	__asm volatile ("isb 0xF":::"memory");
+}
+__attribute__((always_inline)) static inline void __DSB(void) {
+	__asm volatile ("dsb 0xF":::"memory");
+}
+__attribute__((always_inline)) static inline void __DMB(void) {
+	__asm volatile ("dmb 0xF":::"memory");
+}
 
 #endif //STM32WB07_TYPES_H

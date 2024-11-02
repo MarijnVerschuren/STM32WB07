@@ -7,10 +7,10 @@
 
 /*!< init / disable */
 void enable_GPIO(GPIO_t* port) {
-	RCC->AHBENR |= 0b1U << GPIO_to_int(port);
+	RCC->AHBENR |= 0b1U << (GPIO_to_int(port) + 2);
 }
 void disable_GPIO(GPIO_t* port) {
-	RCC->AHBENR &= ~(0b1U << GPIO_to_int(port));
+	RCC->AHBENR &= ~(0b1U << (GPIO_to_int(port) + 2));
 }
 
 

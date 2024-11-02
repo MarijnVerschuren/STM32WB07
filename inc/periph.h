@@ -20,6 +20,7 @@
 #define PWR						((PWR_t*)PWR_BASE)
 
 /*!< APB1 peripherals */
+#define SYSCFG					((SYSCFG_t*)SYSCFG_BASE)
 #define FLASH					((FLASH_t*)FLASH_BASE)
 
 /*!< APB3 peripherals */
@@ -36,19 +37,15 @@ typedef struct {
 } SYS_TICK_t;
 
 typedef struct {
-	_IO uint32_t	ISER[8U];		/* interrupt enable                 0x000 */
-		uint32_t	_0[24U];
-	_IO uint32_t	ICER[8U];		/* interrupt disable                0x080 */
-		uint32_t	_1[24U];
-	_IO uint32_t	ISPR[8U];		/* interrupt set pending            0x100 */
-		uint32_t	_2[24U];
-	_IO uint32_t	ICPR[8U];		/* interrupt clear pending			0x180 */
-		uint32_t	_3[24U];
-	_IO uint32_t	IABR[8U];		/* interrupt active bit             0x200 */
-		uint32_t	_4[56U];
-	_IO uint8_t 	IP[240U];		/* interrupt priority               0x300 */
-		uint32_t	_5[644U];
-	_O	uint32_t	STIR;			/* software trigger interrupt       0xE00 */
+	_IO uint32_t	ISER;			/* interrupt enable                 0x000 */
+		uint32_t	_0[31U];
+	_IO uint32_t	ICER;			/* interrupt disable                0x080 */
+		uint32_t	_1[31U];
+	_IO uint32_t	ISPR;			/* interrupt set pending            0x100 */
+		uint32_t	_2[31U];
+	_IO uint32_t	ICPR;			/* interrupt clear pending			0x180 */
+		uint32_t	_3[95U];
+	_IO uint8_t 	IP[32U];		/* interrupt priority               0x300 */
 } NVIC_t;
 
 typedef struct {
@@ -84,10 +81,10 @@ typedef struct {
 	_IO uint32_t	APB3RSTR;		/* APB3 reset                        0x40 */  // NOTE: datasheet refers to APB2
 	_IO uint32_t	_4[3];			/*                            0x44 - 0x4C */
 	_IO uint32_t	AHBENR;			/* AHB enable                        0x50 */
-	_IO uint32_t	APB1ENR;		/* APB1 reset                        0x54 */  // NOTE: datasheet refers to APB0
-	_IO uint32_t	APB2ENR;		/* APB2 reset                        0x58 */  // NOTE: datasheet refers to APB1
+	_IO uint32_t	APB1ENR;		/* APB1 enable                       0x54 */  // NOTE: datasheet refers to APB0
+	_IO uint32_t	APB2ENR;		/* APB2 enable                       0x58 */  // NOTE: datasheet refers to APB1
 	_IO uint32_t	_5;				/*                                   0x5C */
-	_IO uint32_t	APB3ENR;		/* APB3 reset                        0x60 */  // NOTE: datasheet refers to APB2
+	_IO uint32_t	APB3ENR;		/* APB3 enable                       0x60 */  // NOTE: datasheet refers to APB2
 	_IO uint32_t	_6[12];			/*                            0x64 - 0x90 */
 	_IO uint32_t	CSR;			/* reset status                      0x94 */
 	_IO uint32_t	RFSWHSECR;		/* RF software high speed external   0x98 */
@@ -156,6 +153,26 @@ typedef struct {
 	_IO uint32_t	LCKR;			/* port configuration lock           0x1C */
 	_IO uint32_t	AFR[2];			/* alternate function           0x20-0x24 */
 } GPIO_t;
+
+/*!< SYSCFG */
+typedef struct {
+	_IO uint32_t	DIE_ID;			/* CPU die ID                        0x00 */
+	_IO uint32_t	JTAG_ID;		/* JTAG ID                           0x04 */
+	_IO uint32_t	I2C_FMP_CTRL;	/* I2C Fast Mode Plus control        0x08 */
+	_IO uint32_t	IO_DTR;			/* EXTI detection type               0x0C */
+	_IO uint32_t	IO_IBER;		/* EXTI detection edge               0x10 */
+	_IO uint32_t	IO_IEVR;		/* EXTI polarity                     0x14 */
+	_IO uint32_t	IO_IER;			/* EXTI enable                       0x18 */
+	_IO uint32_t	IO_ISCR;		/* EXTI status                       0x1C */
+	_IO uint32_t	PWRC_IER;		/* PWR controller interrupt enable   0x20 */
+	_IO uint32_t	PWRC_ISCR;		/* PWR controller interrupt status   0x24 */
+	_IO uint32_t	IO_SWA_CTRL;	/* IO analog switch control          0x28 */
+	_IO uint32_t	BLERXTX_DTR;	/* BLE TX/RX interrupt type          0x2C */
+	_IO uint32_t	BLERXTX_IBER;	/* BLE TX/RX interrupt edge          0x30 */
+	_IO uint32_t	BLERXTX_IEVR;	/* BLE TX/RX interrupt polarity      0x34 */
+	_IO uint32_t	BLERXTX_IER;	/* BLE TX/RX interrupt enable        0x38 */
+	_IO uint32_t	BLERXTX_ISCR;	/* BLE TX/RX interrupt status        0x3C */
+} SYSCFG_t;
 
 /*!< RADIO */
 typedef struct {

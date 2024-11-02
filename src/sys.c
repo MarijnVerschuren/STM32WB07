@@ -57,16 +57,16 @@ void sys_tick_handler(void) { tick++; }
 
 /*!<
  * functions
- * */
+ * */  // TODO: assembly
 void sys_restart(void) {
-	__asm volatile ("dsb 0xF":::"memory");		// clear memory read pipeline
-	SCB->AIRCR  = (uint32_t)(
-		(0x5FAUL << 16U)			|			// write key
-		(SCB->AIRCR & (7UL << 8U))	|			// keep priority group unchanged
-		1UL << 2U								// write software reset request
+	__DSB();							// clear memory read pipeline
+	SCB->AIRCR = (uint32_t)(
+		(0x5FAUL << 16U)			|	// write key
+		(SCB->AIRCR & (7UL << 8U))	|	// keep priority group unchanged
+		1UL << 2U						// write software reset request
 	);
-	__asm volatile ("dsb 0xF":::"memory");		// clear memory read pipeline (ensure write complete)
-	for(;;) { __asm volatile("nop"); }
+	__DSB();							// clear memory read pipeline (ensure write complete)
+	for(;;) { __NOP(); }
 }
 
 void sys_init(uint32_t flags) {
@@ -120,7 +120,7 @@ void sys_init(uint32_t flags) {
 			0b100UL
 	);
 	// set IRQ priority
-	SCB->SHP[1] |= 0xC0000000UL;
+	SCB->SHP[1] |= 0x80000000UL;
 }
 
 void sys_reset(void) {

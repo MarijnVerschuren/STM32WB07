@@ -1,9 +1,44 @@
 #include "sys.h"
 #include "GPIO.h"
+#include "EXTI.h"
 
 
-//b1
-// application
+/*!<
+ * variables
+ * */
+_IO uint8_t status = 0b00U;
+
+
+/*!<
+ * interrupts
+ * */
+void GPIOA_handler(void) {
+	SYSCFG->IO_ISCR |= 0x00000001UL;
+	status ^= 0b01U;
+}
+
+void GPIOB_handler(void) {
+	SYSCFG->IO_ISCR |= 0x00200000UL;
+	status ^= 0b10U;
+}
+
+
+/*!<
+ * functions
+ * */
+void LED_sweep(uint8_t d) {
+	GPIO_toggle(GPIOB, d	<< 1);	delay_ms(50);
+	GPIO_toggle(GPIOB, 4);			delay_ms(50);
+	GPIO_toggle(GPIOB, (!d)	<< 1);	delay_ms(50);
+	GPIO_toggle(GPIOB, d	<< 1);	delay_ms(50);
+	GPIO_toggle(GPIOB, 4);			delay_ms(50);
+	GPIO_toggle(GPIOB, (!d)	<< 1);	delay_ms(50);
+}
+
+
+/*!<
+ * main
+ * */
 void main(void) {
 	sys_init(
 		HSE_ENABLE | PLL_ENABLE | PLL64_buffer_ENABLE | SYS_CLK_SPEED_64MHz |
@@ -14,22 +49,22 @@ void main(void) {
 	config_GPIO(GPIOB, 4, GPIO_output);		// G
 	config_GPIO(GPIOB, 2, GPIO_output);		// R
 
-	delay_ms(100);
-	for (uint8_t i = 0; i < 12; i++) {
-		GPIO_toggle(GPIOB, 0);
-		delay_ms(50);
-		GPIO_toggle(GPIOB, 4);
-		delay_ms(50);
-		GPIO_toggle(GPIOB, 2);
-		delay_ms(50);
-	}
+	config_GPIO(GPIOA, 0, GPIO_input | GPIO_pull_up);		// BTN1
+	config_EXTI(GPIOA, 0, EXTI_edge | EXTI_faling_edge);
+	config_GPIO(GPIOB, 5, GPIO_input | GPIO_pull_up);		// BTN2
+	config_EXTI(GPIOB, 5, EXTI_edge | EXTI_faling_edge);
+	config_EXTI_IRQ(GPIOA, 0b11U); start_EXTI(GPIOA, 0);
+	config_EXTI_IRQ(GPIOA, 0b11U); start_EXTI(GPIOB, 5);
+	// TODO: BTN3 for restart (BTN3 does not work)
 
-	delay_ms(200);
-	for (uint8_t i = 0; i < 10; i++) {
-		GPIO_toggle(GPIOB, 0);
-		GPIO_toggle(GPIOB, 4);
-		GPIO_toggle(GPIOB, 2);
-		delay_ms(100);
+
+	for(;;) {
+		GPIO_write(GPIOB, 0, 1);
+		GPIO_write(GPIOB, 4, 1);
+		GPIO_write(GPIOB, 2, 1);
+
+		if(status & 0b01U) { LED_sweep(0); }
+		if(status & 0b10U) { LED_sweep(1); }
 	}
 
 	sys_restart();
