@@ -63,6 +63,7 @@ add_executable(${PROJECT_NAME}
     src/sys.c
     src/GPIO.c
     src/EXTI.c
+    src/USART.c
     src/RF.c
     src/main.c
 )

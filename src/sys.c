@@ -120,7 +120,7 @@ void sys_init(uint32_t flags) {
 			0b100UL
 	);
 	// set IRQ priority
-	SCB->SHP[1] |= 0x80000000UL;
+	SCB->SHP[1] |= 0xC0000000UL;
 }
 
 void sys_reset(void) {

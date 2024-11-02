@@ -1,0 +1,16 @@
+{
+	"clocks": {
+		"APB1": 0,
+		"APB2": 1,
+		"APB3": 2,
+		"AHB": 3
+	},
+	"ports": {
+		"A": 0,
+		"B": 1
+	},
+	"uarts": {
+		"UART1": ["APB2", 4],
+		"LPUART1": ["APB2", 5]
+	}
+}

@@ -22,6 +22,15 @@ typedef unsigned long long	uint64_t;
 
 #define NULL ((void*)0x00000000UL)
 
+typedef struct {
+	uint32_t	clk		: 4;		// clock bus
+	uint32_t	periph	: 8;		// peripheral
+	uint32_t	misc	: 8;		// misc info (tim channel number etc...)
+	uint32_t	port	: 4;		// GPIO port
+	uint32_t	pin		: 4;		// GPIO pin
+	uint32_t	alt		: 4;		// alternate function
+} dev_pin_t;  // 32 bit
+
 // TODO: assemble all functions that contain these
 __attribute__((always_inline)) static inline void __NOP(void) {
 	__asm volatile ("nop");

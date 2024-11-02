@@ -23,9 +23,15 @@
 #define SYSCFG					((SYSCFG_t*)SYSCFG_BASE)
 #define FLASH					((FLASH_t*)FLASH_BASE)
 
+/*!< APB2 */
+#define USART1					((USART_t*)USART1_BASE)
+#define LPUART1					((USART_t*)LPUART1_BASE)
+
 /*!< APB3 peripherals */
 #define RADIO					((RADIO_t*)RADIO_BASE)
 #define RADIO_CTRL              ((RADIO_CTRL_t *)RADIO_CTRL_BASE)
+
+
 /*!<
  * core peripheral types
  * */
@@ -173,6 +179,22 @@ typedef struct {
 	_IO uint32_t	BLERXTX_IER;	/* BLE TX/RX interrupt enable        0x38 */
 	_IO uint32_t	BLERXTX_ISCR;	/* BLE TX/RX interrupt status        0x3C */
 } SYSCFG_t;
+
+/*!< USART */
+typedef struct {
+	_IO uint32_t	CR1;			/* control 1                         0x00 */
+	_IO uint32_t	CR2;			/* control 2                         0x04 */
+	_IO uint32_t	CR3;			/* control 3                         0x08 */
+	_IO uint32_t	BRR;			/* baud rate                         0x0C */
+	_IO uint32_t	GTPR;			/* guard time and prescaler          0x10 */
+	_IO uint32_t	RTOR;			/* receiver timeout                  0x14 */
+	_IO uint32_t	RQR;			/* request                           0x18 */
+	_IO uint32_t	ISR;			/* interrupt and status              0x1C */
+	_IO uint32_t	ICR;			/* interrupt flag clear              0x20 */
+	_IO uint32_t	RDR;			/* receive data                      0x24 */
+	_IO uint32_t	TDR;			/* transmit data                     0x28 */
+	_IO uint32_t	PSC;			/* prescaler register                0x2C */
+} USART_t;
 
 /*!< RADIO */
 typedef struct {

@@ -1,6 +1,7 @@
 #include "sys.h"
 #include "GPIO.h"
 #include "EXTI.h"
+#include "USART.h"
 
 
 /*!<
@@ -45,20 +46,27 @@ void main(void) {
 		SYS_CLK_SRC_PLL | SYS_TICK_ENABLE | SYS_TICK_INT_ENABLE
 	);
 
+	/*!< LEDs */
 	config_GPIO(GPIOB, 0, GPIO_output);		// B
 	config_GPIO(GPIOB, 4, GPIO_output);		// G
 	config_GPIO(GPIOB, 2, GPIO_output);		// R
 
+	/*!< buttons */
 	config_GPIO(GPIOA, 0, GPIO_input | GPIO_pull_up);		// BTN1
 	config_EXTI(GPIOA, 0, EXTI_edge | EXTI_faling_edge);
 	config_GPIO(GPIOB, 5, GPIO_input | GPIO_pull_up);		// BTN2
 	config_EXTI(GPIOB, 5, EXTI_edge | EXTI_faling_edge);
 	config_EXTI_IRQ(GPIOA, 0b11U); start_EXTI(GPIOA, 0);
 	config_EXTI_IRQ(GPIOA, 0b11U); start_EXTI(GPIOB, 5);
-	// TODO: BTN3 for restart (BTN3 does not work)
 
+	/*!< uart */
+	config_UART(LPUART1_TX_B6, LPUART1_RX_B7, 115200);
 
+	/*!< main loop */
+	uint64_t prev = tick;
 	for(;;) {
+		if (tick - prev > 1000) { USART_print(LPUART1, "Hello World!\n", 100); }
+
 		GPIO_write(GPIOB, 0, 1);
 		GPIO_write(GPIOB, 4, 1);
 		GPIO_write(GPIOB, 2, 1);
