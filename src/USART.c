@@ -23,8 +23,8 @@ static void enable_USART(USART_t* uart) {
 
 /*!< init / enable / disable */
 void disable_USART(USART_t* uart) {
-	if (uart == USART1)		{ RCC->APB2ENR &= ~0x00000400UL; }
-	if (uart == LPUART1)	{ RCC->APB2ENR &= ~0x00000100UL; }
+	if (uart == USART1)		{ RCC->APB2RSTR |= 0x00000400UL; }
+	if (uart == LPUART1)	{ RCC->APB2RSTR |= 0x00000100UL; }
 }
 
 void fconfig_UART(USART_GPIO_t _tx, USART_GPIO_t _rx, uint32_t baud, uint32_t flags) {

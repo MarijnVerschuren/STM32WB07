@@ -22,18 +22,18 @@ void config_EXTI(GPIO_t* port, uint8_t pin, uint32_t flags) {
 	SYSCFG->IO_IEVR |=	(((flags >> 2U)	& 0b1UL) << pin);
 }
 void config_EXTI_IRQ(GPIO_t* port, uint32_t priority) {
-	set_IRQ_priority(GPIOA_IRQn + GPIO_to_int(port), priority);
+	NVIC_set_IRQ_priority(GPIOA_IRQn + GPIO_to_int(port), priority);
 }
 
 void start_EXTI(GPIO_t* port, uint8_t pin) {
 	pin += (GPIO_to_int(port) << 4);
 	SYSCFG->IO_IER |=	(0b1UL << pin);
-	enable_IRQ(GPIOA_IRQn + GPIO_to_int(port));
+	NVIC_enable_IRQ(GPIOA_IRQn + GPIO_to_int(port));
 }
 
 void stop_EXTI(GPIO_t* port, uint8_t pin) {
 	pin += (GPIO_to_int(port) << 4);
 	SYSCFG->IO_IER &=	~(0b1UL << pin);
 	if (SYSCFG->IO_IER & (0xFFFFUL << (GPIO_to_int(port) << 4))) { return; }
-	disable_IRQ(GPIOA_IRQn + GPIO_to_int(port));
+	NVIC_disable_IRQ(GPIOA_IRQn + GPIO_to_int(port));
 }

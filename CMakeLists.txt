@@ -61,9 +61,14 @@ add_executable(${PROJECT_NAME}
 
     src/NVIC.c
     src/sys.c
+    src/WDG.c
+    src/RTC.c
+    src/tim.c
     src/GPIO.c
     src/EXTI.c
     src/USART.c
+    src/CRC.c
+    src/RNG.c
     src/RF.c
     src/main.c
 )

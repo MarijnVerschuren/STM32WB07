@@ -17,7 +17,7 @@ extern const uint32_t LSE_clock_frequency =		32768;
  * clock variables
  * */
 extern uint32_t LSI_clock_frequency =	32000;
-extern uint32_t LS_clock_frequency =	0;
+extern uint32_t LS_clock_frequency =	32000;
 extern uint32_t SYS_clock_frequency =	16000000;
 
 volatile extern uint64_t tick = 0;

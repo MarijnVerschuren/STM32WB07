@@ -64,8 +64,8 @@ extern const IVT_ELEMENT_t IVT[];
 /*!<
  * init
  * */
-void enable_IRQ(IRQn_t irqn);
-void disable_IRQ(IRQn_t irqn);
-void set_IRQ_priority(IRQn_t irqn, uint32_t priority);
+void NVIC_enable_IRQ(IRQn_t irqn);
+void NVIC_disable_IRQ(IRQn_t irqn);
+void NVIC_set_IRQ_priority(IRQn_t irqn, uint32_t priority);
 
 #endif //STM32WB07_NVIC_H

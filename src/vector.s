@@ -35,7 +35,7 @@ IVT:
 .word 0x00000000	// SPI3_handler
 .word 0x00000000	// USART1_handler
 .word 0x00000000	// LPUART1_handler
-.word 0x00000000	// TIM1_handler
+.word TIM1_handler
 .word 0x00000000	// RTC_handler
 .word 0x00000000	// ADC_handler
 .word 0x00000000	// PKA_handler
@@ -86,6 +86,10 @@ default_handler:
 .thumb_set sys_tick_handler,	default_handler
 
 /*!< STM32WB07 interrupts */
+
+.weak TIM1_handler
+.thumb_set TIM1_handler,		default_handler
+
 .weak GPIOA_handler
 .thumb_set GPIOA_handler,		default_handler
 .weak GPIOB_handler
