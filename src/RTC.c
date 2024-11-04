@@ -14,7 +14,7 @@
 #define UNIX_YEAR 1970
 
 static const uint8_t days_per_month[12U] = {
-		31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+	31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
 /*!< static */
@@ -52,28 +52,28 @@ void fconfig_RTC(
 	RTC->PRER |= (((async_pre - 1) & 0x7F) << 16);	// asynchronous prescaler	NOTE: there must be TWO writes to PRER
 
 	RTC->DR = (
-			((time.year / 10U) << 20U)	|		// set year tens
-			((time.year % 10U) << 16U)	|		// set year units
-			((time.month / 10U) << 12U)	|		// set month tens
-			((time.month % 10U) << 8U)	|		// set month units
-			((time.day_unit) << 13U)	|		// set week day unit
-			((time.day / 10U) << 4U)	|		// set day tens
-			((time.day % 10U) << 0U)			// set day units
+		((time.year / 10U) << 20U)	|		// set year tens
+		((time.year % 10U) << 16U)	|		// set year units
+		((time.month / 10U) << 12U)	|		// set month tens
+		((time.month % 10U) << 8U)	|		// set month units
+		((time.day_unit) << 13U)	|		// set week day unit
+		((time.day / 10U) << 4U)	|		// set day tens
+		((time.day % 10U) << 0U)			// set day units
 	);
 	RTC->TR = (
-			((time.hour / 10U) << 20U)	|		// set hour tens
-			((time.hour % 10U) << 16U)	|		// set hour units
-			((time.min / 10U) << 12U)	|		// set min tens
-			((time.min % 10U) << 8U)	|		// set min units
-			((time.sec / 10U) << 4U)	|		// set sec tens
-			((time.sec % 10U) << 0U)			// set sec units
+		((time.hour / 10U) << 20U)	|		// set hour tens
+		((time.hour % 10U) << 16U)	|		// set hour units
+		((time.min / 10U) << 12U)	|		// set min tens
+		((time.min % 10U) << 8U)	|		// set min units
+		((time.sec / 10U) << 4U)	|		// set sec tens
+		((time.sec % 10U) << 0U)			// set sec units
 	);
 
 	RTC->CR = (
-			0x00000020UL					|	// enable shadow register bypass
-			((wakeup & 0b1U) << 10U)		|	// set wake-up enable setting
-			(((wakeup >> 1) & 0b1U) << 14U)	|	// set wake-up interrupt setting
-			(wakeup_div << 0U)					// set wake-up clock setting
+		0x00000020UL					|	// enable shadow register bypass
+		((wakeup & 0b1U) << 10U)		|	// set wake-up enable setting
+		(((wakeup >> 1) & 0b1U) << 14U)	|	// set wake-up interrupt setting
+		(wakeup_div << 0U)					// set wake-up clock setting
 	);
 	RTC->WUTR = wakeup_reload;				// set wake-up timer reload
 
@@ -85,17 +85,17 @@ void fconfig_RTC(
 
 void config_RTC(RTC_timestamp_t time, RTC_wakeup_t wakeup, RTC_wakeup_div_t wakeup_div, uint16_t wakeup_reload) {
 	fconfig_RTC(
-			LS_clock_frequency / 0x100,
-			0x100, time, wakeup, wakeup_div,
-			wakeup_reload
+		LS_clock_frequency / 0x100,
+		0x100, time, wakeup, wakeup_div,
+		wakeup_reload
 	);
 }
 
 void uconfig_RTC(uint32_t epoch, RTC_wakeup_t wakeup, RTC_wakeup_div_t wakeup_div, uint16_t wakeup_reload) {
 	fconfig_RTC(
-			LS_clock_frequency / 0x100U, 0x100U,
-			UNIX_BCD(epoch), wakeup, wakeup_div,
-			wakeup_reload
+		LS_clock_frequency / 0x100U, 0x100U,
+		UNIX_BCD(epoch), wakeup, wakeup_div,
+		wakeup_reload
 	);
 }
 

@@ -35,6 +35,7 @@
 /*!< APB3 peripherals */
 #define RADIO					((RADIO_t*)RADIO_BASE)
 #define RADIO_CTRL              ((RADIO_CTRL_t *)RADIO_CTRL_BASE)
+#define RRM
 
 
 /*!<
@@ -317,5 +318,107 @@ typedef struct{
 	_IO uint32_t	ISR;			/* interrupt status                  0x10 */
 	_IO uint32_t	IER;			/* interrupt control / enable        0x14 */
 } RADIO_CTRL_t;
+
+/*!< RRM */
+typedef struct
+{
+	_IO uint32_t  RRM_ID;				/*!<  (@ 0x00) RRM_ID register                                                 */
+	_IO uint32_t  RRM_CTRL;          	/*!<  (@ 0x04) RRM_CTRL register                                               */
+	_IO uint32_t  RESERVED[2];
+	_IO uint32_t  UDRA_CTRL0;           /*!<  (@ 0x10) UDRA_CTRL0 register                                             */
+	_IO uint32_t  UDRA_IRQ_ENABLE;   	/*!<  (@ 0x14) UDRA_IRQ_ENABLE register                                        */
+	_IO uint32_t  UDRA_IRQ_STATUS;    	/*!<  (@ 0x18) UDRA_IRQ_STATUS register                                        */
+	_IO uint32_t  UDRA_RADIO_CFG_PTR;   /*!<  (@ 0x1C) UDRA_RADIO_CFG_PTR register                                     */
+	_IO uint32_t  SEMA_IRQ_ENABLE;    	/*!<  (@ 0x20) SEMA_IRQ_ENABLE register                                        */
+	_IO uint32_t  SEMA_IRQ_STATUS;   	/*!<  (@ 0x24) SEMA_IRQ_STATUS register                                        */
+	_IO uint32_t  BLE_IRQ_ENABLE;   	/*!<  (@ 0x28) BLE_IRQ_ENABLE register                                         */
+	_IO uint32_t  BLE_IRQ_STATUS;   	/*!<  (@ 0x2C) BLE_IRQ_STATUS register                                         */
+	_IO uint32_t  RESERVED1[12];
+	_IO uint32_t  VP_CPU_CMD_BUS;   	/*!<  (@ 0x60) VP_CPU_CMD_BUS register                                         */
+	_IO uint32_t  VP_CPU_SEMA_BUS;    	/*!<  (@ 0x64) VP_CPU_SEMA_BUS register                                        */
+	_IO uint32_t  VP_CPU_IRQ_ENABLE;    /*!<  (@ 0x68) VP_CPU_IRQ_ENABLE register                                      */
+	_IO uint32_t  VP_CPU_IRQ_STATUS;    /*!<  (@ 0x6C) VP_CPU_IRQ_STATUS register                                      */
+	_IO uint32_t  RESERVED2[36];
+	_IO uint32_t  AA0_DIG_USR;          /*!<  (@ 0x100+0x00) AA0_DIG_USR register                                      */
+	_IO uint32_t  AA1_DIG_USR;          /*!<  (@ 0x100+0x04) AA1_DIG_USR register                                      */
+	_IO uint32_t  AA2_DIG_USR;          /*!<  (@ 0x100+0x08) AA2_DIG_USR register                                      */
+	_IO uint32_t  AA3_DIG_USR;          /*!<  (@ 0x100+0x0C) AA3_DIG_USR register                                      */
+	_IO uint32_t  DEM_MOD_DIG_USR;	    /*!<  (@ 0x100+0x10) DEM_MOD_DIG_USR register                                  */
+	_IO uint32_t  RADIO_FSM_USR;   		/*!<  (@ 0x100+0x14) RADIO_FSM_USR register                                    */
+	_IO uint32_t  PHYCTRL_DIG_USR; 		/*!<  (@ 0x100+0x18) PHYCTRL_DIG_USR register                                  */
+	_IO uint32_t  RESERVED3[10];
+	_IO uint32_t  AFC0_DIG_ENG;  		/*!<  (@ 0x100+0x44) AFC0_DIG_ENG register                                     */
+	_IO uint32_t  AFC1_DIG_ENG;  		/*!<  (@ 0x100+0x48) AFC1_DIG_ENG register                                     */
+	_IO uint32_t  AFC2_DIG_ENG;   		/*!<  (@ 0x100+0x4C) AFC2_DIG_ENG register                                     */
+	_IO uint32_t  AFC3_DIG_ENG;   		/*!<  (@ 0x100+0x50) AFC3_DIG_ENG register                                     */
+	_IO uint32_t  CR0_DIG_ENG;          /*!<  (@ 0x100+0x54) CR0_DIG_ENG register                                      */
+	_IO uint32_t  RESERVED4[4];
+	_IO uint32_t  CR0_LR;           	/*!<  (@ 0x100+0x68) CR0_LR register                                           */
+	_IO uint32_t  VIT_CONF_DIG_ENG;   	/*!<  (@ 0x100+0x6C) VIT_CONF_DIG_ENG register                                 */
+	_IO uint32_t  RESERVED5[5];
+	_IO uint32_t  LR_PD_THR_DIG_ENG;    /*!<  (@ 0x100+0x84) LR_PD_THR_DIG_ENG register                                */
+	_IO uint32_t  LR_RSSI_THR_DIG_ENG;  /*!<  (@ 0x100+0x88) LR_RSSI_THR_DIG_ENG register                              */
+	_IO uint32_t  LR_AAC_THR_DIG_ENG;   /*!<  (@ 0x100+0x8C) LR_AAC_THR_DIG_ENG register                               */
+	_IO uint32_t  RESERVED6[19];
+	_IO uint32_t  DTB0_DIG_ENG;   		/*!<  (@ 0x100+0xDC) DTB0_DIG_ENG register                                     */
+	_IO uint32_t  RESERVED7[4];
+	_IO uint32_t  DTB5_DIG_ENG;   		/*!<  (@ 0x100+0xF0) DTB5_DIG_ENG register                                     */
+	_IO uint32_t  RESERVED8[16];
+	_IO uint32_t  MOD0_DIG_TST;   		/*!<  (@ 0x100+0x134) MOD0_DIG_TST register                                    */
+	_IO uint32_t  MOD1_DIG_TST;   		/*!<  (@ 0x100+0x138) MOD1_DIG_TST register                                    */
+	_IO uint32_t  MOD2_DIG_TST;   		/*!<  (@ 0x100+0x13C) MOD2_DIG_TST register                                    */
+	_IO uint32_t  MOD3_DIG_TST;   		/*!<  (@ 0x100+0x140) MOD3_DIG_TST register                                    */
+	_IO uint32_t  RESERVED9;
+	_IO uint32_t  RXADC_ANA_USR;    	/*!<  (@ 0x100+0x148) RXADC_ANA_USR register                                   */
+	_IO uint32_t  RESERVED10[2];
+	_IO uint32_t  LDO_ANA_ENG;          /*!<  (@ 0x100+0x154) LDO_ANA_ENG register                                     */
+	_IO uint32_t  RESERVED11[7];
+	_IO uint32_t  CBIAS0_ANA_ENG;  		/*!<  (@ 0x100+0x174) CBIAS0_ANA_ENG register                                  */
+	_IO uint32_t  CBIAS1_ANA_ENG;   	/*!<  (@ 0x100+0x178) CBIAS1_ANA_ENG register                                  */
+	_IO uint32_t  CBIAS_ANA_TEST;   	/*!<  (@ 0x100+0x17C) CBIAS_ANA_TEST register                                  */
+	_IO uint32_t  SYNTHCAL0_DIG_OUT;    /*!<  (@ 0x100+0x180) SYNTHCAL0_DIG_OUT register                               */
+	_IO uint32_t  SYNTHCAL1_DIG_OUT;    /*!<  (@ 0x100+0x184) SYNTHCAL1_DIG_OUT register                               */
+	_IO uint32_t  SYNTHCAL2_DIG_OUT;    /*!<  (@ 0x100+0x188) SYNTHCAL2_DIG_OUT register                               */
+	_IO uint32_t  SYNTHCAL3_DIG_OUT;    /*!<  (@ 0x100+0x18C) SYNTHCAL3_DIG_OUT register                               */
+	_IO uint32_t  SYNTHCAL4_DIG_OUT;    /*!<  (@ 0x100+0x190) SYNTHCAL4_DIG_OUT register                               */
+	_IO uint32_t  SYNTHCAL5_DIG_OUT;    /*!<  (@ 0x100+0x194) SYNTHCAL5_DIG_OUT register                               */
+	_IO uint32_t  FSM_STATUS_DIG_OUT;   /*!<  (@ 0x100+0x198) FSM_STATUS_DIG_OUT register                              */
+	_IO uint32_t  IRQ_STATUS_DIG_OUT;   /*!<  (@ 0x100+0x19C) IRQ_STATUS_DIG_OUT register                              */
+	_IO uint32_t  RESERVED12;
+	_IO uint32_t  RSSI0_DIG_OUT;  	 	/*!<  (@ 0x100+0x1A4) RSSI0_DIG_OUT register                                   */
+	_IO uint32_t  RSSI1_DIG_OUT;   		/*!<  (@ 0x100+0x1A8) RSSI1_DIG_OUT register                                   */
+	_IO uint32_t  AGC_DIG_OUT;          /*!<  (@ 0x100+0x1AC) AGC_DIG_OUT register                                     */
+	_IO uint32_t  DEMOD_DIG_OUT;   		/*!<  (@ 0x100+0x1B0) DEMOD_DIG_OUT register                                   */
+	_IO uint32_t  AGC0_ANA_TST;   		/*!<  (@ 0x100+0x1B4) AGC0_ANA_TST register                                    */
+	_IO uint32_t  AGC1_ANA_TST;   		/*!<  (@ 0x100+0x1B8) AGC1_ANA_TST register                                    */
+	_IO uint32_t  AGC2_ANA_TST;   		/*!<  (@ 0x100+0x1BC) AGC2_ANA_TST register                                    */
+	_IO uint32_t  AGC0_DIG_ENG;   		/*!<  (@ 0x100+0x1C0) AGC0_DIG_ENG register                                    */
+	_IO uint32_t  AGC1_DIG_ENG;   		/*!<  (@ 0x100+0x1C4) AGC1_DIG_ENG register                                    */
+	_IO uint32_t  AGC2_DIG_ENG;   		/*!<  (@ 0x100+0x1C8) AGC2_DIG_ENG register                                    */
+	_IO uint32_t  AGC3_DIG_ENG;   		/*!<  (@ 0x100+0x1CC) AGC3_DIG_ENG register                                    */
+	_IO uint32_t  AGC4_DIG_ENG;   		/*!<  (@ 0x100+0x1D0) AGC4_DIG_ENG register                                    */
+	_IO uint32_t  AGC5_DIG_ENG;   		/*!<  (@ 0x100+0x1D4) AGC5_DIG_ENG register                                    */
+	_IO uint32_t  AGC6_DIG_ENG;   		/*!<  (@ 0x100+0x1D8) AGC6_DIG_ENG register                                    */
+	_IO uint32_t  AGC7_DIG_ENG;   		/*!<  (@ 0x100+0x1DC) AGC7_DIG_ENG register                                    */
+	_IO uint32_t  AGC8_DIG_ENG;   		/*!<  (@ 0x100+0x1E0) AGC8_DIG_ENG register                                    */
+	_IO uint32_t  AGC9_DIG_ENG;   		/*!<  (@ 0x100+0x1E4) AGC9_DIG_ENG register                                    */
+	_IO uint32_t  AGC10_DIG_ENG;    	/*!<  (@ 0x100+0x1E8) AGC10_DIG_ENG register                                   */
+	_IO uint32_t  AGC11_DIG_ENG;    	/*!<  (@ 0x100+0x1EC) AGC11_DIG_ENG register                                   */
+	_IO uint32_t  AGC12_DIG_ENG;    	/*!<  (@ 0x100+0x1F0) AGC12_DIG_ENG register                                   */
+	_IO uint32_t  AGC13_DIG_ENG;    	/*!<  (@ 0x100+0x1F4) AGC13_DIG_ENG register                                   */
+	_IO uint32_t  AGC14_DIG_ENG;    	/*!<  (@ 0x100+0x1F8) AGC14_DIG_ENG register                                   */
+	_IO uint32_t  AGC15_DIG_ENG;    	/*!<  (@ 0x100+0x1FC) AGC15_DIG_ENG register                                   */
+	_IO uint32_t  AGC16_DIG_ENG;    	/*!<  (@ 0x100+0x200) AGC16_DIG_ENG register                                   */
+	_IO uint32_t  AGC17_DIG_ENG;    	/*!<  (@ 0x100+0x204) AGC17_DIG_ENG register                                   */
+	_IO uint32_t  AGC18_DIG_ENG;    	/*!<  (@ 0x100+0x208) AGC18_DIG_ENG register                                   */
+	_IO uint32_t  AGC19_DIG_ENG;    	/*!<  (@ 0x100+0x20C) AGC19_DIG_ENG register                                   */
+	_IO uint32_t  AGC20_DIG_ENG;    	/*!<  (@ 0x100+0x210) AGC20_DIG_ENG register                                   */
+	_IO uint32_t  RESERVED13[4];
+	_IO uint32_t  RXADC_HW_TRIM_OUT;    /*!<  (@ 0x100+0x224) RXADC_HW_TRIM_OUT register                               */
+	_IO uint32_t  CBIAS0_HW_TRIM_OUT;   /*!<  (@ 0x100+0x228) CBIAS0_HW_TRIM_OUT register                              */
+	_IO uint32_t  CBIAS1_HW_TRIM_OUT;   /*!<  (@ 0x100+0x22C) CBIAS1_HW_TRIM_OUT register                              */
+	_IO uint32_t  AGC_HW_TRIM_OUT;      /*!<  (@ 0x100+0x230) AGC_HW_TRIM_OUT register                                 */
+	_IO uint32_t  RESERVED14;
+} RRM_t;                                /*!< Size = 824 (0x338)                                                        */
 
 #endif //STM32WB07_PERIPH_H

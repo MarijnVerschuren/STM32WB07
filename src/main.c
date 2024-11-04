@@ -13,7 +13,7 @@
  * variables
  * */
 _IO uint8_t status = 0b00U;
-_IO uint32_t timestamp = 1735685999;
+_IO uint32_t timestamp = 0;
 
 
 /*!<
@@ -75,10 +75,10 @@ void main(void) {
 	start_TIM_update_irq();
 
 	/*!< RTC */
-	uconfig_RTC(timestamp, RTC_WAKEUP_DISABLE, RTC_WAKEUP_DIV16, 0);
+	uconfig_RTC(1735685999, RTC_WAKEUP_DISABLE, RTC_WAKEUP_DIV16, 0);  // TODO!!
 
 	/*!< uart */
-	config_UART(LPUART1_TX_B6, LPUART1_RX_B7, 115200);  // TODO: test (CN4 -> 35 tx, 37 rx)
+	config_UART(USART1_TX_A9, USART1_RX_A8, 115200);  // TODO test
 
 	/*!< CRC */
 	config_CRC(0x04C11DB7UL, 0xFFFFFFFFUL, CRC_POLY_SIZE_32);  // MPEG-2
@@ -94,10 +94,10 @@ void main(void) {
 
 	/*!< main loop */
 	start_TIM();
-	start_WDG();
+	//start_WDG();
 	uint64_t prev = tick;
 	for(;;) {
-		if (tick - prev > 1000) { USART_print(LPUART1, "Hello World!\n", 100); prev = tick; }
+		if (tick - prev > 1000) { USART_print(USART1, "Hello World!\n", 100); prev = tick; }
 
 		GPIO_write(GPIOB, 0, 1);
 		GPIO_write(GPIOB, 4, 1);
@@ -106,7 +106,7 @@ void main(void) {
 		if(status & 0b01U) { LED_sweep(0); }
 		if(status & 0b10U) { LED_sweep(1); }
 
-		WDG_tick();
+		//WDG_tick();
 	}
 
 	sys_restart();
