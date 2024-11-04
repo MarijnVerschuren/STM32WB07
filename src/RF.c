@@ -9,8 +9,97 @@
  * variables
  * */  // TODO: linker address
 extern struct {
+    // GLOBAL STATEMACHINE page 594 in software.pdf
+    // word 0
 	_IO	uint32_t	CFG_PTR;
-	_IO	uint32_t	CONN_NUM	: 7;
+	// word 1
+	_IO	uint32_t	CONN_NUM	    : 7;
+    _IO	uint32_t    ACTIVE          : 1;
+    _IO	uint32_t    WAKE_INIT_DELAY : 8;
+    _IO	uint32_t    TIM_12_DEL_CAL  : 8;
+    _IO	uint32_t    TIM_12_DEL_NOCAL: 8;
+    // word 2
+    _IO	uint32_t    TX_CAL_DEL      : 8;
+    _IO	uint32_t    TX_NOCAL_DEL    : 8;
+    _IO	uint32_t    RX_CAL_DEL      : 8;
+    _IO	uint32_t    RX_NOCAL_DEL    : 8;
+    // word 3
+    _IO	uint32_t    CFG_END_DUR     : 8;
+    _IO	uint32_t    TX_RDY_CHK      : 8;
+    _IO	uint32_t    TX_DEL_START    : 8;
+    _IO	uint32_t    TX_DEL_END      : 6;
+    _IO	uint32_t    TIME_CAP_SEL    : 1;
+    _IO	uint32_t    TIME_CAP        : 1;
+    // word 4
+    _IO	uint32_t    TX_RDY_TO       : 8;
+    _IO	uint32_t    RCV_TO          :20;
+    	uint32_t    _31_28          : 4;
+    // word 5
+    _IO	uint32_t    AUTO_TXRX_SKIP  : 1;
+    	uint32_t    _1              : 1;
+    _IO	uint32_t    AUTO_CLR_BIT_EN : 1;
+    	uint32_t    _7_3            : 5;
+    /* error interrupts */
+    _IO	uint32_t    SEQ_ERR         : 5;
+    	uint32_t    _19_13          : 7;
+    _IO	uint32_t    ADD_PTR_ERR     : 1;
+    _IO	uint32_t    TBL_RDY_ERR     : 1;
+    _IO	uint32_t    TX_DATA_ERR     : 1;
+    _IO	uint32_t    ACT_LBIT_ERR    : 1;
+    	uint32_t    _24             : 1;
+    _IO	uint32_t    RX_DATA_LEN_ERR : 1;
+    _IO	uint32_t    SEMA_TO_ERR     : 1;
+    	uint32_t    _27             : 1;
+    _IO	uint32_t    EOT_SEQ_INT     : 1;
+    _IO	uint32_t    TXRX_SKIP_INT   : 1;
+    _IO	uint32_t    ACT_2_ERR       : 1;
+    _IO	uint32_t    CFG_ERR         : 1;
+
+    // STATEMACHINE RAM table page 599 in software.pdf
+    // word 0
+    _IO uint32_t    UCHAN           : 6;
+        uint32_t    _s1             : 1;
+    _IO uint32_t    TX_MODE         : 1;
+    _IO uint32_t    REMAP_CHAN      : 6;
+    _IO uint32_t    SN              : 1;
+    _IO uint32_t    NESN            : 1;
+        uint32_t    _s2             : 4;
+    _IO uint32_t    BUF_FULL        : 1;
+    _IO uint32_t    ENCRYPTON       : 1;
+    _IO uint32_t    TXENC           : 1;
+    _IO uint32_t    RCV_ENC         : 1;
+    _IO uint32_t    TX_PHY          : 3;
+        uint32_t    _s3             : 1;
+    _IO uint32_t    RX_PHY          : 3;
+        uint32_t    _s4             : 1;
+    // word 1
+    _IO uint32_t    TX_POINT;
+    // word 2
+    _IO uint32_t    RCV_POINT;
+    // word 3
+    _IO uint32_t    TX_POINT_PREV;
+    // word 4
+    _IO uint32_t    RCV_POINT_PREV;
+    // word 5
+    _IO uint32_t    RCV_POINT_NEXT;
+    // word 6
+    _IO uint32_t    PCNT_TX_31_0;
+    // word 7
+    _IO uint32_t    PCNT_TX_39_32;  : 8;
+    _IO uint32_t    PCNT_RCV_23_0;  : 24;
+    // word 8
+    _IO uint32_t    PCNT_RCV_39_24  : 16;
+    _IO uint32_t    PA_REP          : 4;
+    _IO uint32_t    EN_PA_REP       : 1;
+    _IO uint32_t    DIS_PA_REP      : 1;
+        uint32_t    _s5             : 1;
+    _IO uint32_t    RX_MIC_DB       : 1;
+    _IO uint32_t    INT_TX_ERR      : 5;
+    _IO uint32_t    INT_ENC_ERR     : 1;
+    _IO uint32_t    INT_RX_OERR     : 1;
+    _IO uint32_t    RX_DB_CRC       : 1;
+
+
 
 } RF_state;
 // TODO: linker address define
