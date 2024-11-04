@@ -85,8 +85,8 @@ extern struct {
     // word 6
     _IO uint32_t    PCNT_TX_31_0;
     // word 7
-    _IO uint32_t    PCNT_TX_39_32;  : 8;
-    _IO uint32_t    PCNT_RCV_23_0;  : 24;
+    _IO uint32_t    PCNT_TX_39_32  : 8;
+    _IO uint32_t    PCNT_RCV_23_0  : 24;
     // word 8
     _IO uint32_t    PCNT_RCV_39_24  : 16;
     _IO uint32_t    PA_REP          : 4;
@@ -98,9 +98,71 @@ extern struct {
     _IO uint32_t    INT_ENC_ERR     : 1;
     _IO uint32_t    INT_RX_OERR     : 1;
     _IO uint32_t    RX_DB_CRC       : 1;
+	// word 9
+	_IO uint32_t	ACC_ADDR;
+	// word A
+	_IO uint32_t	CRC_INIT		: 24;
+	_IO uint32_t	MAX_REC_LEN		: 8;
+	// word B
+	_IO uint32_t	PA_PWR			: 5;
+		uint32_t	_s6				: 3;
+	_IO uint32_t	HOP_INC			: 6;
+		uint32_t	_s7				: 2;
+	_IO uint32_t	USD_CHLFLG_15_0 : 16;
+	// word C
+	_IO uint32_t	USD_CHLFLG_36_16: 22;
+		uint32_t	_s8				: 10;
+	// word D
+	_IO uint32_t	CON_E_CNTR		: 16;
+	_IO uint32_t	PA_E_CNTR		: 16;
+	// word E
+	_IO uint32_t	ENC_IV_31_0;
+	// word F
+	_IO uint32_t	ENC_IV_63_32;
+	// word 10
+	_IO uint32_t	ENC_KEY_31_0;
+	// word 11
+	_IO uint32_t	ENC_KEY_63_32;
+	// word 12
+	_IO uint32_t	ENC_KEY_95_64;
+	// word 13
+	_IO uint32_t	ENC_KEY_127_96;
 
-
-
+	// TxRxPack RAM table page ? in software.pdf
+	//word 0
+	_IO uint32_t	NXT_PTR;
+	// word 1
+	_IO uint32_t	CAL_REQ			: 1;
+	_IO uint32_t	CHL_GO_2_SEEL	: 1;
+	_IO uint32_t	KP_SEMA_REQ		: 1;
+		uint32_t	_t1				: 1;
+	_IO uint32_t	CRC_INIT_SEL	: 1;
+	_IO uint32_t	ADV				: 1;
+	_IO uint32_t	SN_EN			: 1;
+	_IO uint32_t	INC_CHAN		: 1;
+	_IO uint32_t	NXT_TX_MODE		: 1;
+	_IO uint32_t	A_TBL_RDY		: 1;
+	_IO uint32_t	TX_DAT_RDY		: 1;
+		uint32_t	_t2				: 1;
+	_IO uint32_t	DIS_WHNG		: 1;
+		uint32_t	_t3				: 19;
+	// word 2
+	_IO uint32_t	DAT_PTR;
+	// word 3
+	_IO uint32_t	TIM_2			: 20;
+	_IO uint32_t	TIM_2_EN		: 1;
+	_IO uint32_t	_t4				: 1;
+	_IO uint32_t	TRIG_RCV		: 1;
+	_IO uint32_t	TRIG_DONE		: 1;
+	_IO uint32_t	INT_TX_OK		: 1;
+	_IO uint32_t	INT_DONE		: 1;
+	_IO uint32_t	INT_RCV_TOUT	: 1;
+	_IO uint32_t	INT_RCV_NMD		: 1;
+	_IO uint32_t	INT_TIM_CAPT	: 1;
+	_IO uint32_t	INT_RCV_CRC_ERR : 1;
+	_IO uint32_t	INT_RCV_OK		: 1;
+	// word 4
+		uint32_t	_t5;
 } RF_state;
 // TODO: linker address define
 #define RFW_state ((uint32_t*)&RF_state)
