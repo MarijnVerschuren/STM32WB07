@@ -17,23 +17,6 @@ static const uint8_t days_per_month[12U] = {
 	31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
-/*!< static */
-static RTC_timestamp_t UNIX_BCD(uint32_t epoch) {
-	uint16_t _year = (epoch / SEC_PER_YEAR);	epoch %= SEC_PER_YEAR;
-	epoch -= (_year / 4 + (_year % 4 > 2)) * SEC_PER_DAY; _year += UNIX_YEAR;
-	uint8_t _month, leap_flag = ((!(_year % 4) && _year % 100) || !(_year % 400));
-	for (_month = 0; _month < 12; _month++) {
-		uint32_t sec = ((days_per_month[_month] + (leap_flag && _month == 1)) * SEC_PER_DAY);
-		if (sec > epoch) { break; } epoch -= sec;
-	}
-	RTC_timestamp_t t;
-	t.year = _year - 2000; t.month = _month + 1;
-	t.day =		(epoch / SEC_PER_DAY) + 1;	epoch %= SEC_PER_DAY;
-	t.hour =	(epoch / SEC_PER_HOUR);		epoch %= SEC_PER_HOUR;
-	t.min =		epoch / SEC_PER_MIN;		epoch %= SEC_PER_MIN;
-	t.sec =		epoch;
-	return t;
-}
 
 /*!< enable / disable */
 void fconfig_RTC(
@@ -85,15 +68,15 @@ void fconfig_RTC(
 
 void config_RTC(RTC_timestamp_t time, RTC_wakeup_t wakeup, RTC_wakeup_div_t wakeup_div, uint16_t wakeup_reload) {
 	fconfig_RTC(
-		LS_clock_frequency / 0x100,
-		0x100, time, wakeup, wakeup_div,
+		0x80U, 0x100,
+		time, wakeup, wakeup_div,
 		wakeup_reload
 	);
 }
 
 void uconfig_RTC(uint32_t epoch, RTC_wakeup_t wakeup, RTC_wakeup_div_t wakeup_div, uint16_t wakeup_reload) {
 	fconfig_RTC(
-		LS_clock_frequency / 0x100U, 0x100U,
+		0x80U, 0x100U,
 		UNIX_BCD(epoch), wakeup, wakeup_div,
 		wakeup_reload
 	);
@@ -102,6 +85,42 @@ void uconfig_RTC(uint32_t epoch, RTC_wakeup_t wakeup, RTC_wakeup_div_t wakeup_di
 void reset_RTC() {}
 /*!< misc */
 void config_RTC_ext_ts(uint8_t int_enable, RTC_TS_pol_t pol) {}
+RTC_timestamp_t UNIX_BCD(uint32_t epoch) {
+	uint16_t _year = (epoch / SEC_PER_YEAR);	epoch %= SEC_PER_YEAR;
+	uint32_t leap_sec = (_year / 4 + (_year % 4 > 2)) * SEC_PER_DAY;
+	uint8_t _month, leap_flag = ((!(_year % 4) && _year % 100) || !(_year % 400));
+	if (epoch < leap_sec) { _year--; epoch += (SEC_PER_YEAR + (leap_flag * SEC_PER_DAY)); }
+	epoch -= leap_sec; _year += UNIX_YEAR;
+	for (_month = 0; _month < 12; _month++) {
+		uint32_t sec = ((days_per_month[_month] + (leap_flag && _month == 1)) * SEC_PER_DAY);
+		if (sec > epoch) { break; } epoch -= sec;
+	}
+	RTC_timestamp_t t;
+	t.year = _year - 2000; t.month = _month + 1;
+	t.day =		(epoch / SEC_PER_DAY) + 1;	epoch %= SEC_PER_DAY;
+	t.hour =	(epoch / SEC_PER_HOUR);		epoch %= SEC_PER_HOUR;
+	t.min =		epoch / SEC_PER_MIN;		epoch %= SEC_PER_MIN;
+	t.sec =		epoch;
+	return t;
+}
+uint32_t BCD_UNIX(RTC_timestamp_t time) {
+	uint16_t year =		time.year + 2000;
+	uint8_t	 month =	time.month - 1;
+	uint8_t	 day =		time.day - 1;
+	uint8_t	 hour =		time.hour;
+	uint8_t	 min =		time.min;
+	uint8_t	 sec =		time.sec;
+
+	uint8_t leap_flag = ((!(year % 4) && year % 100) || !(year % 400));
+	year -= UNIX_YEAR; uint32_t epoch = year * SEC_PER_YEAR;
+	epoch += (year / 4 + (year % 4 > 2) + (leap_flag && month > 1)) * SEC_PER_DAY;
+	for (uint8_t i = 0; i < month; i++) { epoch += days_per_month[i] * SEC_PER_DAY; }
+	epoch += day * SEC_PER_DAY;
+	epoch += hour * SEC_PER_HOUR;
+	epoch += min * SEC_PER_MIN;
+	epoch += sec;
+	return epoch;
+}
 uint32_t RTC_unix(void) {
 	uint32_t DR = RTC->DR;
 	uint32_t TR = RTC->TR;

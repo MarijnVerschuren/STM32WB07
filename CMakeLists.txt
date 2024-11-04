@@ -70,6 +70,7 @@ add_executable(${PROJECT_NAME}
     src/CRC.c
     src/RNG.c
     src/RF.c
+    src/SPI.c
     src/main.c
 )
 

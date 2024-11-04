@@ -320,8 +320,7 @@ typedef struct{
 } RADIO_CTRL_t;
 
 /*!< RRM */
-typedef struct
-{
+typedef struct {  // TODO
 	_IO uint32_t  RRM_ID;				/*!<  (@ 0x00) RRM_ID register                                                 */
 	_IO uint32_t  RRM_CTRL;          	/*!<  (@ 0x04) RRM_CTRL register                                               */
 	_IO uint32_t  RESERVED[2];

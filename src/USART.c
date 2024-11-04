@@ -64,7 +64,9 @@ uint32_t USART_write(USART_t* usart, const uint8_t* buffer, uint32_t size, uint3
 	for (uint32_t i = 0; i < size; i++) {
 		while (!(usart->ISR & 0x00000080UL)) { if ( tick - start > timeout) { return i; } }
 		usart->TDR = buffer[i];
-	} return size;
+	}
+	while (!(usart->ISR & 0x00000040UL)) { if (tick - start > timeout) { return -1; } }
+	return size;
 }
 uint32_t USART_read(USART_t* usart, uint8_t* buffer, uint32_t size, uint32_t timeout) {
 	uint64_t start = tick;
@@ -79,5 +81,6 @@ uint8_t USART_print(USART_t* usart, char* str, uint32_t timeout) {
 		while (!(usart->ISR & 0x00000080UL)) { if (tick - start > timeout) { return -1; } }
 		usart->TDR = *str++;
 	}
+	while (!(usart->ISR & 0x00000040UL)) { if (tick - start > timeout) { return -1; } }
 	return 0;
 }
