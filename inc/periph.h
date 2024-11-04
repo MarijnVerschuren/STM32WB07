@@ -35,7 +35,7 @@
 /*!< APB3 peripherals */
 #define RADIO					((RADIO_t*)RADIO_BASE)
 #define RADIO_CTRL              ((RADIO_CTRL_t *)RADIO_CTRL_BASE)
-#define RRM
+#define RRM						((RRM_t*)RRM_BASE)
 
 
 /*!<

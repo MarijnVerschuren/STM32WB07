@@ -24,7 +24,7 @@ volatile extern uint64_t tick = 0;
 
 
 /*!<
- * config
+ * config TODO: linker
  * */
 volatile struct {
 	// RCC->CR
