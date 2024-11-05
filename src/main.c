@@ -7,6 +7,7 @@
 #include "RNG.h"
 #include "WDG.h"
 #include "RTC.h"
+#include "SPI.h"
 
 
 /*!<
@@ -93,13 +94,25 @@ void main(void) {
 	/*!< watchdog */
 	config_WDG(WDG_DIV_256, 0xFFFUL);
 
+	/*!< SPI */
+	config_SPI_master(
+		SPI2_SCK_A5, SPI2_MOSI_A6, SPI2_MISO_A7,
+		SPI_CPHA_FIRST_EDGE | SPI_CPOL_LOW | SPI_CLK_DIV_2 |
+		SPI_ENDIANNESS_MSB | SPI_MODE_DUPLEX | SPI_FRAME_MOTOROLA |
+		SPI_DATA_8 | SPI_FIFO_TH_HALF
+	);
+
 	/*!< main loop */
 	start_TIM();
 	//start_WDG();
 	uint64_t prev = tick;
 	uint32_t dt = 0;
 	for(;;) {
-		if (tick - prev > 100) { prev = tick; USART_write(USART1, (void*)&timestamp, 4, 10); }
+		if (tick - prev > 100) {
+			prev = tick;
+			USART_write(USART1, (void*)&timestamp, 4, 10);
+			SPI_master_write8(SPI2, (void*)&timestamp, 4, 10);
+		}
 
 		GPIO_write(GPIOB, 0, 1);
 		GPIO_write(GPIOB, 4, 1);

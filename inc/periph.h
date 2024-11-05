@@ -29,8 +29,11 @@
 #define RTC						((RTC_t*)RTC_BASE)
 
 /*!< APB2 */
+#define SPI1					((SPI_t*)SPI1_BASE)
+#define SPI2					((SPI_t*)SPI2_BASE)
 #define USART1					((USART_t*)USART1_BASE)
 #define LPUART1					((USART_t*)LPUART1_BASE)
+#define SPI3					((SPI_t*)SPI3_BASE)
 
 /*!< APB3 peripherals */
 #define RADIO					((RADIO_t*)RADIO_BASE)
@@ -282,6 +285,19 @@ typedef struct {
 	_IO uint32_t	SR;				/* status                            0x04 */
 	_IO uint32_t	VAL;			/* value                             0x08 */
 } RNG_t;
+
+/*!< SPI */
+typedef struct {
+	_IO	uint32_t	CR1;			/* control 1                         0x00 */
+	_IO	uint32_t	CR2;			/* control 2                         0x04 */
+	_IO	uint32_t	SR;				/* status                            0x08 */
+	_IO	uint32_t	DR;				/* data                              0x0C */
+	_IO	uint32_t	CRCPR;			/* CRC polynomial                    0x10 */
+	_IO	uint32_t	RXCRCR;			/* RX CRC                            0x14 */
+	_IO	uint32_t	TXCRCR;			/* TX CRC                            0x18 */
+	_IO	uint32_t	I2SCFGR;		/* I2S configuration                 0x1C */
+	_IO	uint32_t	I2SPR;			/* I2S prescaler                     0x20 */
+} SPI_t;
 
 /*!< RADIO */
 typedef struct {

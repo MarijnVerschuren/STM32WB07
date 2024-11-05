@@ -6,7 +6,7 @@
 
 
 /*!< static */
-static USART_t* int_to_USART(uint8_t pnum) {
+static USART_t* int_to_USART(uint8_t pnum) {  // TODO: unify with other periph converters
 	return (USART_t*)(APB2PERIPH_BASE + (pnum << 12U));
 }
 
