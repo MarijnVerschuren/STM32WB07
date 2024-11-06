@@ -1,4 +1,5 @@
 from argparse import ArgumentParser as parser
+from subprocess import check_call as _cc
 from json import load, dump
 from os.path import dirname
 from os import listdir
@@ -11,6 +12,7 @@ parse = parser(
 flag =			{"action": "store_true"}
 input_default =	{"action": "store", "type": int, "default": None}
 CWD = dirname(__file__)
+CPY = lambda x: _cc(f"echo {x}, | xclip -selection clipboard", shell=True)
 
 
 def choose(items: list):
@@ -86,6 +88,7 @@ if __name__ == "__main__":
 					((clk & 0xf) << 0)
 			)
 			#print(hex(sub))
-			print(f"{res:#0{10}x}UL".upper().replace("X", "x"), end="\n\n")
+			msg = f"{res:#0{10}x}UL".upper().replace("X", "x")
+			CPY(msg); print(msg, end="\n\n")
 		except KeyboardInterrupt:   exit(0)
 		except Exception as e:      print(e); pass

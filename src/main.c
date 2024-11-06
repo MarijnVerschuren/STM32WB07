@@ -7,6 +7,7 @@
 #include "RNG.h"
 #include "WDG.h"
 #include "RTC.h"
+#include "SPI.h"
 
 
 /*!<
@@ -53,8 +54,9 @@ void LED_sweep(uint8_t d) {
  * */
 void main(void) {
 	sys_init(
-		HSE_ENABLE | PLL_ENABLE | PLL64_buffer_ENABLE | SYS_CLK_SPEED_64MHz |
-		SYS_CLK_SRC_PLL | SYS_TICK_ENABLE | SYS_TICK_INT_ENABLE
+		HSE_ENABLE | LSE_ENABLE | PLL_ENABLE | PLL64_buffer_ENABLE |
+		SYS_CLK_SPEED_64MHz | SYS_CLK_SRC_PLL | LS_CLK_SRC_LSE |
+		SYS_TICK_ENABLE | SYS_TICK_INT_ENABLE
 	);
 
 	/*!< LEDs */
@@ -75,7 +77,7 @@ void main(void) {
 	start_TIM_update_irq();
 
 	/*!< RTC */
-	uconfig_RTC(1735685999, RTC_WAKEUP_DISABLE, RTC_WAKEUP_DIV16, 0);  // TODO!!
+	uconfig_RTC(1735689599, RTC_WAKEUP_DISABLE, RTC_WAKEUP_DIV16, 0);  // TODO!!
 
 	/*!< uart */
 	config_UART(USART1_TX_A9, USART1_RX_A8, 115200);  // TODO test
@@ -90,14 +92,31 @@ void main(void) {
 	uint32_t rn = RNG_generate();
 
 	/*!< watchdog */
-	config_WDG(WDG_DIV_256, 0xFFFUL);
+	//config_WDG(WDG_DIV_256, 0xFFFUL);
+
+	/*!< SPI */
+	config_GPIO(GPIOA, 4, GPIO_output);
+	config_SPI_master(
+		SPI2_SCK_A5, SPI2_MOSI_A6, SPI2_MISO_A7,
+		SPI_CPHA_FIRST_EDGE | SPI_CPOL_LOW | SPI_CLK_DIV_2 |
+		SPI_ENDIANNESS_MSB | SPI_MODE_DUPLEX | SPI_NSS_SOFTWARE |
+		SPI_FRAME_MOTOROLA | SPI_DATA_8 | SPI_FIFO_TH_HALF
+	);
+	GPIO_write(GPIOA, 4, 1);
 
 	/*!< main loop */
 	start_TIM();
 	//start_WDG();
 	uint64_t prev = tick;
+	uint32_t dt = 0;
 	for(;;) {
-		if (tick - prev > 1000) { USART_print(USART1, "Hello World!\n", 100); prev = tick; }
+		if (tick - prev > 100) {
+			prev = tick;
+			USART_write(USART1, (void*)&timestamp, 4, 10);
+			GPIO_write(GPIOA, 4, 0);
+			SPI_master_write8(SPI2, (void*)&timestamp, 4, 10);
+			GPIO_write(GPIOA, 4, 1);
+		}
 
 		GPIO_write(GPIOB, 0, 1);
 		GPIO_write(GPIOB, 4, 1);

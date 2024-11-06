@@ -12,5 +12,10 @@
 	"uarts": {
 		"UART1": ["APB2", 4],
 		"LPUART1": ["APB2", 5]
+	},
+	"spis": {
+		"SPI1": ["APB2", 2],
+		"SPI2": ["APB2", 3],
+		"SPI3": ["APB2", 7]
 	}
 }
