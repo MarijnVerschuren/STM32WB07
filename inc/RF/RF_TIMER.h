@@ -3,7 +3,7 @@
 
 #include "WAKEUP.h"
 #include "NVIC.h"
-#include "RF.h"
+#include "RF/RF.h"
 /** @defgroup RADIO_TIMER_Private_Defines RADIO TIMER Private Defines
   * @{
   */

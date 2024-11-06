@@ -1,4 +1,4 @@
-#include "RF_TIMER.h"
+#include "RF/RF_TIMER.h"
 
 /**
   * @brief  VIRTUAL TIMER Callback pointer definition
@@ -121,7 +121,7 @@ __disable_irq(); \
 #define INCREMENT_EXPIRE_COUNT_ISR (RADIO_TIMER_Context.expired_count\
 = ((RADIO_TIMER_Context.expired_count + 1) == RADIO_TIMER_Context.served_count) ? RADIO_TIMER_Context.expired_count : (RADIO_TIMER_Context.expired_count + 1))
 #define INCREMENT_EXPIRE_COUNT ATOMIC_SECTION_BEGIN(); INCREMENT_EXPIRE_COUNT_ISR ; ATOMIC_SECTION_END();
-
+#define WAKEUP_INIT_DELAY (27) /* about 65us in STU */
 static uint64_t _get_system_time_and_machine(RADIO_TIMER_ContextTypeDef *context, uint32_t *current_machine_time)
 {
     uint32_t difftime;
@@ -185,13 +185,13 @@ static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, ui
   if (rel_timeout > (device_delay + RADIO_TIMER_Context.hs_startup_time + MARGIN_EXT))
   {
     /*The timeout is after the wakeup_time_offset, So it is ok to program the wakeup timer*/
-    delay = rel_timeout_mt - (uint8_t)(RFW_state[1] >> 8U) - radio_init_delay;
+    delay = rel_timeout_mt - RF_state.WAKE_INIT_DELAY  - radio_init_delay;
     WAKEUP->BLUE_WAKEUP_TIME = ((current_time + delay) & TIMER_MAX_VALUE);
     WAKEUP->BLUE_SLEEP_REQUEST_MODE = 0;
     RADIO->TODR = 0b00;
     WAKEUP->BLUE_SLEEP_REQUEST_MODE |= (0b1U << 30U);
       WAKEUP->BLUE_SLEEP_REQUEST_MODE |= (0b1U << 29U);
-    radio_init_delay += (uint8_t)(RFW_state[1] >> 8U);
+    radio_init_delay += RF_state.WAKE_INIT_DELAY ;
   }
   else
   {
@@ -204,12 +204,12 @@ static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, ui
 
   RADIO_TIMER_Context.last_anchor_mt = (current_time + rel_timeout_mt) & TIMER_MAX_VALUE;
 
-    RFW_state[1] &= ~0xFFU;
-  RFW_state[1] |= 0b1U << 7U;
-    RFW_state[5] &= 0xFF0000FF;
-  RFW_state[5] = 0xF0 << 16U;
-  RFW_state[5] = 0xFF << 24U;
-
+  RF_state.ACTIVE = 0b1;
+    RF_state.ADD_PTR_ERR = 0b1;
+    RF_state.TBL_RDY_ERR = 0b1;
+    RF_state.TX_DATA_ERR = 0b1;
+    RF_state.ACT_LBIT_ERR = 0b1;
+    RFW_state[5] |= 0xFF000000;
 
   /* Basic low level check with an extra margin of machine units */
   if ((delay + radio_init_delay) < (radio_init_delay + 5))
@@ -429,29 +429,26 @@ static uint32_t _us_to_systime(uint32_t time)
     t2 = time * 0xDB;
     return (t1 >> 8) + (t2 >> 16);
 }
- // TODO
+ // TODO=
 static void _configureTxRxDelay(RADIO_TIMER_ContextTypeDef *context, uint8_t calculate_st)
 {
     uint8_t tx_delay_start;
 
-    tx_delay_start = (BLUEGLOB->TXDELAYSTART * 125 / 1000) + 1;
+    tx_delay_start = (RF_state.TX_DEL_START * 125 / 1000) + 1;
+    RF_state.WAKE_INIT_DELAY =  blue_unit_conversion(WAKEUP_INIT_DELAY, context->calibrationData.freq1, MULT64_THR_FREQ);
+    context->TxRxDelay.tim12_delay_mt = _us_to_machinetime(RF_state.TIM_12_DEL_CAL);
+    context->TxRxDelay.tx_cal_delay = _us_to_machinetime(RF_state.TX_CAL_DEL + tx_delay_start);
+    context->TxRxDelay.tx_no_cal_delay = _us_to_machinetime(RF_state.TX_NOCAL_DEL + tx_delay_start);
+    context->TxRxDelay.rx_cal_delay = _us_to_machinetime(RF_state.RX_CAL_DEL);
+    context->TxRxDelay.rx_no_cal_delay = _us_to_machinetime(RF_state.RX_NOCAL_DEL);
 
-    BLUEGLOB->WAKEUPINITDELAY =  blue_unit_conversion(WAKEUP_INIT_DELAY, context->calibrationData.freq1, MULT64_THR_FREQ);
-    context->TxRxDelay.tim12_delay_mt = _us_to_machinetime(BLUEGLOB->TIMER12INITDELAYCAL);
-    context->TxRxDelay.tx_cal_delay = _us_to_machinetime(BLUEGLOB->TRANSMITCALDELAYCHK + tx_delay_start);
-    context->TxRxDelay.tx_no_cal_delay = _us_to_machinetime(BLUEGLOB->TRANSMITNOCALDELAYCHK + tx_delay_start);
-    context->TxRxDelay.rx_cal_delay = _us_to_machinetime(BLUEGLOB->RECEIVECALDELAYCHK);
-    context->TxRxDelay.rx_no_cal_delay = _us_to_machinetime(BLUEGLOB->RECEIVENOCALDELAYCHK);
-
-    if (calculate_st)
-    {
-        context->TxRxDelay.tx_cal_delay_st    = _us_to_systime(BLUEGLOB->TRANSMITCALDELAYCHK + tx_delay_start) + WAKEUP_INIT_DELAY;
+    if (calculate_st) {
+        context->TxRxDelay.tx_cal_delay_st    = _us_to_systime(RF_state.TX_CAL_DEL + tx_delay_start) + WAKEUP_INIT_DELAY;
     }
 
 }
 
 void radio_timer_init(void){
-
     /* Wait to be sure that the Radio Timer is active */
     while(WAKEUP->ABSOLUTE_TIME < 0x10);
 

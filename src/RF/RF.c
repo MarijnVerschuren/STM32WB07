@@ -2,7 +2,7 @@
 // Created by marijn on 11/1/24.
 //
 
-#include "../../inc/RF.h"
+#include "RF/RF.h"
 
 /*!<
  * variables
