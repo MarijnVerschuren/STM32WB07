@@ -69,9 +69,13 @@ add_executable(${PROJECT_NAME}
     src/USART.c
     src/CRC.c
     src/RNG.c
-    src/RF.c
+    src/RF/RF.c
     src/SPI.c
     src/main.c
+    src/PKA.c
+    src/WAKEUP.c
+    src/RF/RF_TIMER.c
+    src/RF/BLE.c
 )
 
 target_link_libraries(${PROJECT_NAME}

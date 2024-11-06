@@ -44,5 +44,19 @@ __attribute__((always_inline)) static inline void __DSB(void) {
 __attribute__((always_inline)) static inline void __DMB(void) {
 	__asm volatile ("dmb 0xF":::"memory");
 }
+__attribute__((always_inline)) static inline void __IRQ_D(void) {
+	__asm volatile ("cpsid i":::"memory");
+}
+__attribute__((always_inline)) static inline void __IRQ_E(void) {
+	__asm volatile ("cpsie i":::"memory");
+}
+__attribute__((always_inline)) static inline void __SET_PRIMASK(uint32_t primask) {
+	__asm volatile ("MSR primask, %0" : : "r" (primask) : "memory");
+}
+__attribute__((always_inline)) static inline uint32_t __GET_PRIMASK(void) {
+	uint32_t r;
+	__asm volatile ("MRS %0, primask" : "=r" (r) );
+	return(r);
+}
 
 #endif //STM32WB07_TYPES_H
