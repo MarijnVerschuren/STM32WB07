@@ -92,15 +92,17 @@ void main(void) {
 	uint32_t rn = RNG_generate();
 
 	/*!< watchdog */
-	config_WDG(WDG_DIV_256, 0xFFFUL);
+	//config_WDG(WDG_DIV_256, 0xFFFUL);
 
 	/*!< SPI */
+	config_GPIO(GPIOA, 4, GPIO_output);
 	config_SPI_master(
 		SPI2_SCK_A5, SPI2_MOSI_A6, SPI2_MISO_A7,
 		SPI_CPHA_FIRST_EDGE | SPI_CPOL_LOW | SPI_CLK_DIV_2 |
-		SPI_ENDIANNESS_MSB | SPI_MODE_DUPLEX | SPI_FRAME_MOTOROLA |
-		SPI_DATA_8 | SPI_FIFO_TH_HALF
+		SPI_ENDIANNESS_MSB | SPI_MODE_DUPLEX | SPI_NSS_SOFTWARE |
+		SPI_FRAME_MOTOROLA | SPI_DATA_8 | SPI_FIFO_TH_HALF
 	);
+	GPIO_write(GPIOA, 4, 1);
 
 	/*!< main loop */
 	start_TIM();
@@ -111,7 +113,9 @@ void main(void) {
 		if (tick - prev > 100) {
 			prev = tick;
 			USART_write(USART1, (void*)&timestamp, 4, 10);
+			GPIO_write(GPIOA, 4, 0);
 			SPI_master_write8(SPI2, (void*)&timestamp, 4, 10);
+			GPIO_write(GPIOA, 4, 1);
 		}
 
 		GPIO_write(GPIOB, 0, 1);

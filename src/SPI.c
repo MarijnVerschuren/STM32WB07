@@ -34,13 +34,13 @@ void fconfig_SPI_master(SPI_GPIO_t _sck, SPI_GPIO_t _mosi, SPI_GPIO_t _miso, uin
 	*((uint32_t*)&mosi) = _mosi;
 	*((uint32_t*)&miso) = _miso;
 	SPI_t* spi = int_to_SPI(sck.periph);
-	fconfig_GPIO(int_to_GPIO(sck.port), sck.pin, GPIO_alt_func | GPIO_high_speed | GPIO_push_pull, sck.alt);
+	enable_SPI(spi); fconfig_GPIO(int_to_GPIO(sck.port), sck.pin, GPIO_alt_func | GPIO_high_speed | GPIO_push_pull, sck.alt);
 	if (_mosi) { fconfig_GPIO(int_to_GPIO(mosi.port), mosi.pin, GPIO_alt_func | GPIO_high_speed | GPIO_push_pull, mosi.alt); }
 	if (_miso) { fconfig_GPIO(int_to_GPIO(miso.port), miso.pin, GPIO_alt_func | GPIO_high_speed | GPIO_push_pull, miso.alt); }
 	spi->CR1 = (flags & 0xFFFFUL) | 0x00000004UL;
-	spi->CR2 = (flags >> 16U);
+	spi->CR2 = ((flags >> 16U) & 0xFFFFUL);
+	spi->I2SCFGR = 0x00000000UL;
 	spi->CRCPR = crc_poly;
-	spi->CR1 |= 0x00000040UL;
 }
 
 void config_SPI_master(SPI_GPIO_t sck, SPI_GPIO_t mosi, SPI_GPIO_t miso, uint32_t flags) {
@@ -48,8 +48,8 @@ void config_SPI_master(SPI_GPIO_t sck, SPI_GPIO_t mosi, SPI_GPIO_t miso, uint32_
 }
 
 uint32_t SPI_master_write8(SPI_t* spi, const uint8_t* buffer, uint32_t size, uint32_t timeout) {
+	spi->CR1 |= 0x00000044UL;
 	uint64_t start = tick;
-	while (!(spi->SR & 0x00000080UL)) { if ( tick - start > timeout) { return 0; } }
 	for (uint32_t i = 0; i < size; i++) {
 		while (!(spi->SR & 0x00000002UL)) { if ( tick - start > timeout) { return i; } }
 		spi->DR = buffer[i];

@@ -30,9 +30,9 @@ IVT:
 .word 0x00000000	// PVD_handler
 .word 0x00000000	// I2C1_handler
 .word 0x00000000	// I2C2_handler
-.word 0x00000000	// SPI1_handler
-.word 0x00000000	// SPI2_handler
-.word 0x00000000	// SPI3_handler
+.word SPI1_handler
+.word SPI2_handler
+.word SPI3_handler
 .word 0x00000000	// USART1_handler
 .word 0x00000000	// LPUART1_handler
 .word TIM1_handler
@@ -86,6 +86,13 @@ default_handler:
 .thumb_set sys_tick_handler,	default_handler
 
 /*!< STM32WB07 interrupts */
+
+.weak SPI1_handler
+.thumb_set SPI1_handler,		default_handler
+.weak SPI2_handler
+.thumb_set SPI2_handler,		default_handler
+.weak SPI3_handler
+.thumb_set SPI3_handler,		default_handler
 
 .weak TIM1_handler
 .thumb_set TIM1_handler,		default_handler
