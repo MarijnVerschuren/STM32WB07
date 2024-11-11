@@ -8,6 +8,11 @@
 #include "WDG.h"
 #include "RTC.h"
 #include "SPI.h"
+#include "PKA.h"
+
+#include "RF/BLE.h"
+#include "RF/RF.h"
+#include "RF/RF_TIMER.h"
 
 
 /*!<
@@ -90,6 +95,13 @@ void main(void) {
 	/*!< RNG */
 	enable_RNG();
 	uint32_t rn = RNG_generate();
+
+	/*!< BLE */
+	radio_init();
+	radio_timer_init();
+	pka_init();
+	MX_APPE_Init();
+
 
 	/*!< watchdog */
 	//config_WDG(WDG_DIV_256, 0xFFFUL);

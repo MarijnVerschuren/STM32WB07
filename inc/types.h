@@ -21,6 +21,7 @@ typedef unsigned long long	uint64_t;
 #define _IO	volatile
 
 #define NULL ((void*)0x00000000UL)
+#define PACKED(decl)                    decl __attribute__((packed))
 
 typedef struct {
 	uint32_t	clk		: 4;		// clock bus

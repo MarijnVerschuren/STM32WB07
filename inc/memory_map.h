@@ -23,10 +23,18 @@
 /*!<
  * extended hardware memory map
  * */
-#define FLASH_BASE			0x10040000UL
+#define FLASH_MEM_BASE		0x10040000UL
 #define SRAM_BASE			0x20000000UL
 #define PERIPH_BASE			0x40000000UL
 
+
+/*!< NVM */
+#define NVM_PAGE			0x800UL
+#define NVM_SIZE			0x1000UL
+#define NVM_BASE			0x1007FFFFUL - NVM_SIZE + 1
+
+
+/* clocks */
 #define APB1PERIPH_BASE		PERIPH_BASE
 #define APB2PERIPH_BASE		(PERIPH_BASE + 0x01000000UL)
 #define APB3PERIPH_BASE		(PERIPH_BASE + 0x20000000UL)

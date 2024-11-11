@@ -8,6 +8,7 @@ set(CMAKE_TOOLCHAIN_FILE "cmake/arm-none-eabi.cmake")
 
 # select linker script
 set(LINKER_SCRIPT "lnk/STM32WB07.ld")
+set(BLE_STACK "ble_stack.a")
 
 # define CPU OPTIONS
 set(CPU_OPTIONS -mthumb -mcpu=cortex-m0plus)
@@ -50,6 +51,7 @@ include_directories(
 
 link_directories(
     ${CMAKE_SOURCE_DIR}
+    "lib/"
 )
 
 # list of modules to build final firmware
@@ -69,15 +71,17 @@ add_executable(${PROJECT_NAME}
     src/USART.c
     src/CRC.c
     src/RNG.c
-    src/RF/RF.c
     src/SPI.c
     src/main.c
+
+    src/RF/RF.s
     src/PKA.c
+    src/RF/RF.c
     src/WAKEUP.c
     src/RF/RF_TIMER.c
     src/RF/BLE.c
+    src/RF/bleplat.c
 )
-
 target_link_libraries(${PROJECT_NAME}
     ${CPU_OPTIONS}
     -T${LINKER_SCRIPT}
@@ -85,6 +89,7 @@ target_link_libraries(${PROJECT_NAME}
     m
     # -nostdlib
 )
+target_link_libraries(${PROJECT_NAME} ${BLE_STACK})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY LINK_DEPENDS ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT})
 

@@ -70,7 +70,7 @@ typedef enum {
 	RF_CLK_DIV =			0b1U << 1U,
 } RF_FLAG_t;
 
-extern struct {
+typedef struct {
     // GLOBAL STATEMACHINE page 594 in software.pdf
     // word 0 INDEX 0
 	_IO	uint32_t	CFG_PTR;
@@ -228,9 +228,10 @@ extern struct {
 	_IO uint32_t	INT_RCV_OK		: 1;
 	// word 4 INDEX 31
 		uint32_t	_t5;
-} RF_state;
+} RF_state_t;
 
 // TODO: linker address define
+extern RF_state_t RF_state;
 #define RFW_state ((uint32_t*)&RF_state)
 
 /*!<

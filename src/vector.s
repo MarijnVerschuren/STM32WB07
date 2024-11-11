@@ -38,19 +38,19 @@ IVT:
 .word TIM1_handler
 .word 0x00000000	// RTC_handler
 .word 0x00000000	// ADC_handler
-.word 0x00000000	// PKA_handler
+.word PKA_handler
 .word 0x00000000	// -
 .word GPIOA_handler
 .word GPIOB_handler
 .word 0x00000000	// DMA_handler
-.word 0x00000000	// RADIO_TXRX_handler
+.word RADIO_TXRX_handler
 .word 0x00000000	// -
-.word 0x00000000	// RADIO_TIM_error_handler
+.word RADIO_TIM_error_handler
 .word 0x00000000	// -
 .word 0x00000000	// -
-.word 0x00000000	// RADIO_TIM_CPU_WKUP_handler
-.word 0x00000000	// RADIO_TIM_TXRX_WKUP_handler
-.word 0x00000000	// RADIO_TXRX_SEQ_handler
+.word RADIO_TIM_CPU_WKUP_handler
+.word RADIO_TIM_TXRX_WKUP_handler
+.word RADIO_TXRX_SEQ_handler
 .word 0x00000000	// -
 .word 0x00000000	// -
 .word 0x00000000	// -
@@ -97,8 +97,23 @@ default_handler:
 .weak TIM1_handler
 .thumb_set TIM1_handler,		default_handler
 
+
+.weak PKA_handler
+.thumb_set PKA_handler,			default_handler
+
 .weak GPIOA_handler
 .thumb_set GPIOA_handler,		default_handler
 .weak GPIOB_handler
 .thumb_set GPIOB_handler,		default_handler
 
+.weak RADIO_TXRX_handler
+.thumb_set RADIO_TXRX_handler,				default_handler
+.weak RADIO_TIM_error_handler
+.thumb_set RADIO_TIM_error_handler,			default_handler
+
+.weak RADIO_TIM_CPU_WKUP_handler
+.thumb_set RADIO_TIM_CPU_WKUP_handler,		default_handler
+.weak RADIO_TIM_TXRX_WKUP_handler
+.thumb_set RADIO_TIM_TXRX_WKUP_handler,		default_handler
+.weak RADIO_TXRX_SEQ_handler
+.thumb_set RADIO_TXRX_SEQ_handler,			default_handler

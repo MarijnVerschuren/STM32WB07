@@ -19,6 +19,11 @@ SECTIONS {
 		_bss_end = .;
 	} > SRAM
 
+	.noinit ALIGN(4) (NOLOAD) : {  /* TODO: needed? */
+		*(.noinit)
+		. = ALIGN(4);
+	} > SRAM
+
 	. = ALIGN(4);
 	_heap_start = .;
 }

@@ -17,6 +17,7 @@
 #define GPIOA					((GPIO_t*)GPIOA_BASE)
 #define GPIOB					((GPIO_t*)GPIOB_BASE)
 #define CRC						((CRC_t*)CRC_BASE)
+#define PKA						((PKA_t*)PKA_BASE)
 #define RCC						((RCC_t*)RCC_BASE)
 #define PWR						((PWR_t*)PWR_BASE)
 #define RNG						((RNG_t*)RNG_BASE)
@@ -285,6 +286,13 @@ typedef struct {
 	_IO uint32_t	SR;				/* status                            0x04 */
 	_IO uint32_t	VAL;			/* value                             0x08 */
 } RNG_t;
+
+/*!< PKA */
+typedef struct {
+	_IO uint32_t	CSR;			/* control and status                0x00 */
+	_IO uint32_t	ISR;			/* reload value                      0x04 */
+	_IO uint32_t	IEN;			/* current value                     0x08 */
+} PKA_t;
 
 /*!< SPI */
 typedef struct {
