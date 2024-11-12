@@ -4,11 +4,6 @@
 
 #include "RF/RF.h"
 
-/*!<
- * variables
- * */  // TODO: linker address
-RF_state_t RF_state;
-
 
 /* hot table variables */
 volatile uint32_t hot_table_radio_config_u32[12] = {0x00};
@@ -25,7 +20,7 @@ void radio_init() {  // TODO NOTE: VALID!!!
 	RCC->APB3ENR |=		0x00000001UL;  // NOTE: INIT MRBLE
 
 	/* reset word 1 bit 0-7 */
-	RFW_state[1] &= ~0xFFU;
+	BLE_GLOB_STATE_W[1] &= ~0xFFU;
 
 	RCC->APB3ENR |= 0x05U; // set clock to 16MHz
 	NVIC_set_IRQ_priority(RADIO_TXRX_IRQn, 0);
@@ -75,15 +70,15 @@ void radio_init() {  // TODO NOTE: VALID!!!
 	RRM->VIT_CONF_DIG_ENG |= 0x01U;
 
 	/* set init delay */
-	RFW_state[1] &= ~0xFFFFFF00UL;						// Reset bits to write to
-	RFW_state[1] |= (
+	BLE_GLOB_STATE_W[1] &= ~0xFFFFFF00UL;						// Reset bits to write to
+	BLE_GLOB_STATE_W[1] |= (
 		(INITDELAY_WAKEUP << 8U) |
 		(INITDELAY_TIMER12_CAL << 16U) |
 		(INITDELAY_TIMER2_NOCAL << 24U)
 	);
 
 	/* set init_radio_delay */
-	RFW_state[2] = (
+	BLE_GLOB_STATE_W[2] = (
 		(DELAYCHK_TRANSMIT_CAL << 0U)	|
 		(DELAYCHK_TRANSMIT_NOCAL << 8U)	|
 		(DELAYCHK_RECEIVE_CAL << 16U)	|
@@ -91,8 +86,8 @@ void radio_init() {  // TODO NOTE: VALID!!!
 	);
 
 	/* set Tx delay & duration */
-	RFW_state[3] &= ~0x3FFFFFFFUL;					// Reset bits to write to
-	RFW_state[3] |= (0x3FFFFFFFUL & (
+	BLE_GLOB_STATE_W[3] &= ~0x3FFFFFFFUL;					// Reset bits to write to
+	BLE_GLOB_STATE_W[3] |= (0x3FFFFFFFUL & (
 		(CONFIG_END_DURATION << 0U) |
 		(CHECK_TXDATAREADY << 8U) |
 		(TXDELAY_START << 16U) |
@@ -102,19 +97,19 @@ void radio_init() {  // TODO NOTE: VALID!!!
 	/* Timeout for TX ready signal from the radio FSM after the 2nd init phase
 	*  has expired
 	*/
-	RFW_state[4] &= ~0x000000FFUL;					// Reset bits to write to
-	RFW_state[4] |= TXREADY_TIMEOUT;
+	BLE_GLOB_STATE_W[4] &= ~0x000000FFUL;					// Reset bits to write to
+	BLE_GLOB_STATE_W[4] |= TXREADY_TIMEOUT;
 
 
-	RFW_state[5] &= ~0x20800004UL;
-	RFW_state[5] |= (ChkFlagAutoclearEn << 2U) | (NoActiveLErrorInterruptEn << 23U) | (TxRxSkipInterruptEn << 29U);
+	BLE_GLOB_STATE_W[5] &= ~0x20800004UL;
+	BLE_GLOB_STATE_W[5] |= (ChkFlagAutoclearEn << 2U) | (NoActiveLErrorInterruptEn << 23U) | (TxRxSkipInterruptEn << 29U);
 
 	/* config hot table */
 	radio_conf_hot_table();
-	RFW_state[0] = hot_table_radio_config_u32[0];
+	BLE_GLOB_STATE_W[0] = hot_table_radio_config_u32[0];
 	/* Reload radio config pointer */
 	*(uint32_t*)(RRM_BASE + 0x10U) = 0x01U;
-	RFW_state[5] |= (Active2ErrorInterruptEn << 30U);
+	BLE_GLOB_STATE_W[5] |= (Active2ErrorInterruptEn << 30U);
 
 	/*Clear all interrupts of the BLUE Controller*/
 	uint32_t int_val_tmp = RADIO->ISR[1];

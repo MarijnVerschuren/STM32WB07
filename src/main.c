@@ -97,10 +97,10 @@ void main(void) {
 	uint32_t rn = RNG_generate();
 
 	/*!< BLE */
-	radio_init();
-	radio_timer_init();
-	pka_init();
-	MX_APPE_Init();
+	//radio_init();
+	//radio_timer_init();
+	//pka_init();
+	//MX_APPE_Init();
 
 
 	/*!< watchdog */

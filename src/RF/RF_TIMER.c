@@ -41,7 +41,6 @@ uint64_t _get_system_time_and_machine(RADIO_TIMER_ContextTypeDef *context, uint3
     return new_time;
 }
 
-
 static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, uint8_t cal_req)
 {
   uint32_t current_time, delay, radio_init_delay, device_delay, rel_timeout, rel_timeout_mt;
@@ -84,13 +83,13 @@ static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, ui
   if (rel_timeout > (device_delay + RADIO_TIMER_Context.hs_startup_time + MARGIN_EXT))
   {
     /*The timeout is after the wakeup_time_offset, So it is ok to program the wakeup timer*/
-    delay = rel_timeout_mt - RF_state.WAKE_INIT_DELAY  - radio_init_delay;
+    delay = rel_timeout_mt - ble_globstate.WAKE_INIT_DELAY  - radio_init_delay;
     WAKEUP->BLUE_WAKEUP_TIME = ((current_time + delay) & TIMER_MAX_VALUE);
     WAKEUP->BLUE_SLEEP_REQUEST_MODE = 0;
     RADIO->TODR = 0b00;
     WAKEUP->BLUE_SLEEP_REQUEST_MODE |= (0b1U << 30U);
       WAKEUP->BLUE_SLEEP_REQUEST_MODE |= (0b1U << 29U);
-    radio_init_delay += RF_state.WAKE_INIT_DELAY ;
+    radio_init_delay += ble_globstate.WAKE_INIT_DELAY ;
   }
   else
   {
@@ -103,12 +102,12 @@ static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, ui
 
   RADIO_TIMER_Context.last_anchor_mt = (current_time + rel_timeout_mt) & TIMER_MAX_VALUE;
 
-  RF_state.ACTIVE = 0b1;
-    RF_state.ADD_PTR_ERR = 0b1;
-    RF_state.TBL_RDY_ERR = 0b1;
-    RF_state.TX_DATA_ERR = 0b1;
-    RF_state.ACT_LBIT_ERR = 0b1;
-    RFW_state[5] |= 0xFF000000;
+	ble_globstate.ACTIVE = 0b1;
+	ble_globstate.ADD_PTR_ERR = 0b1;
+	ble_globstate.TBL_RDY_ERR = 0b1;
+	ble_globstate.TX_DATA_ERR = 0b1;
+	ble_globstate.ACT_LBIT_ERR = 0b1;
+	BLE_GLOB_STATE_W[5] |= 0xFF000000;
 
   /* Basic low level check with an extra margin of machine units */
   if ((delay + radio_init_delay) < (radio_init_delay + 5))
@@ -125,7 +124,6 @@ static uint8_t TIMER_SetRadioTimerValue(uint32_t timeout, uint8_t event_type, ui
 
   return ret_val;
 }
-
 
 void _check_radio_activity(RADIO_TIMER_RadioHandleTypeDef *timerHandle, uint8_t *expired)
 {
@@ -167,10 +165,9 @@ void _check_radio_activity(RADIO_TIMER_RadioHandleTypeDef *timerHandle, uint8_t 
 
 void _set_controller_as_host(void)
 {
-    RF_state.ACTIVE = 0b0;
-	RFW_state[5] &= 0x0000FFFFUL;
+	ble_globstate.ACTIVE = 0b0;
+	BLE_GLOB_STATE_W[5] &= 0x0000FFFFUL;
 }
-
 
 static uint32_t TIMER_SetRadioHostWakeupTime(uint32_t delay, uint8_t *share)
 {
@@ -198,8 +195,6 @@ static uint32_t TIMER_SetRadioHostWakeupTime(uint32_t delay, uint8_t *share)
     return current_time;
 }
 
-
-/* Set timeout and skip non active timers */
 static VTIMER_HandleType *_update_user_timeout(VTIMER_HandleType *rootNode, uint8_t *expired)
 {
   VTIMER_HandleType *curr = rootNode;
@@ -261,7 +256,6 @@ static VTIMER_HandleType *_update_user_timeout(VTIMER_HandleType *rootNode, uint
   return curr;
 }
 
-
 static VTIMER_HandleType* _insert_timer_in_queue(VTIMER_HandleType* rootNode, VTIMER_HandleType* handle) {
     VTIMER_HandleType *current = rootNode;
     VTIMER_HandleType *prev = NULL;
@@ -311,6 +305,7 @@ static uint32_t _us_to_machinetime(uint32_t time)
 
     return time_mt;
 }
+
 static uint32_t _us_to_systime(uint32_t time)
 {
     uint32_t t1, t2;
@@ -323,16 +318,16 @@ static void _configureTxRxDelay(RADIO_TIMER_ContextTypeDef *context, uint8_t cal
 {
     uint8_t tx_delay_start;
 
-    tx_delay_start = (RF_state.TX_DEL_START * 125 / 1000) + 1;
-    RF_state.WAKE_INIT_DELAY =  blue_unit_conversion(WAKEUP_INIT_DELAY, context->calibrationData.freq1, MULT64_THR_FREQ);
-    context->TxRxDelay.tim12_delay_mt = _us_to_machinetime(RF_state.TIM_12_DEL_CAL);
-    context->TxRxDelay.tx_cal_delay = _us_to_machinetime(RF_state.TX_CAL_DEL + tx_delay_start);
-    context->TxRxDelay.tx_no_cal_delay = _us_to_machinetime(RF_state.TX_NOCAL_DEL + tx_delay_start);
-    context->TxRxDelay.rx_cal_delay = _us_to_machinetime(RF_state.RX_CAL_DEL);
-    context->TxRxDelay.rx_no_cal_delay = _us_to_machinetime(RF_state.RX_NOCAL_DEL);
+    tx_delay_start = (ble_globstate.TX_DEL_START * 125 / 1000) + 1;
+	ble_globstate.WAKE_INIT_DELAY =  blue_unit_conversion(WAKEUP_INIT_DELAY, context->calibrationData.freq1, MULT64_THR_FREQ);
+    context->TxRxDelay.tim12_delay_mt = _us_to_machinetime(ble_globstate.TIM_12_DEL_CAL);
+    context->TxRxDelay.tx_cal_delay = _us_to_machinetime(ble_globstate.TX_CAL_DEL + tx_delay_start);
+    context->TxRxDelay.tx_no_cal_delay = _us_to_machinetime(ble_globstate.TX_NOCAL_DEL + tx_delay_start);
+    context->TxRxDelay.rx_cal_delay = _us_to_machinetime(ble_globstate.RX_CAL_DEL);
+    context->TxRxDelay.rx_no_cal_delay = _us_to_machinetime(ble_globstate.RX_NOCAL_DEL);
 
     if (calculate_st) {
-        context->TxRxDelay.tx_cal_delay_st    = _us_to_systime(RF_state.TX_CAL_DEL + tx_delay_start) + WAKEUP_INIT_DELAY;
+        context->TxRxDelay.tx_cal_delay_st    = _us_to_systime(ble_globstate.TX_CAL_DEL + tx_delay_start) + WAKEUP_INIT_DELAY;
     }
 
 }
@@ -415,34 +410,56 @@ void radio_timer_init(void){
     _configureTxRxDelay(&RADIO_TIMER_Context, 0b1);
 }
 
+static void _check_host_activity(void) {
+	uint8_t expired;
+	RADIO_TIMER_Context.rootNode = _update_user_timeout(RADIO_TIMER_Context.rootNode, &expired);
+	if (expired == 1) {
+		INCREMENT_EXPIRE_COUNT_ISR;
+	}
+}
 
+uint32_t RADIO_TIMER_ClearRadioTimerValue(void) {
+	int64_t time_diff;
+
+	RADIO->TODR &= ~(0x00000003UL);
+	WAKEUP->BLUE_SLEEP_REQUEST_MODE &= ~(0x40000000UL);
+	RADIO_TIMER_Context.radioTimer.active = 0;
+	RADIO_TIMER_Context.radioTimer.pending = 0;
+	RADIO_TIMER_Context.radioTimer.intTxRx_to_be_served = 0;
+
+	/*The rfSetup is different if Timer1 or Wakeup timer is programmed*/
+	uint32_t _;
+	ATOMIC_SECTION_BEGIN();
+	time_diff = RADIO_TIMER_Context.radioTimer.expiryTime \
+              - _get_system_time_and_machine(&RADIO_TIMER_Context, &_) \
+              - RADIO_TIMER_Context.last_setup_time;
+	ATOMIC_SECTION_END();
+
+	/* Check if the routine is executed in the Tx/Rx interrupt handler or not */
+	if (((SCB->ICSR & 0x1FFUL) - 16) != RADIO_TX_RX_EXCEPTION_NUMBER) {
+		_check_host_activity();
+	}
+
+	if (time_diff <= 0)				{ return 1; }
+	if (time_diff < CLEAR_MIN_THR)	{ return 2; }
+	return 0;
+}
 
 /* Quinten */
-
-static VTIMER_HandleType *check_callbacks(VTIMER_HandleType *rootNode, VTIMER_HandleType **expiredList)
-{
-
+static VTIMER_HandleType *check_callbacks(VTIMER_HandleType *rootNode, VTIMER_HandleType **expiredList) {
 	VTIMER_HandleType *curr = rootNode;
 	VTIMER_HandleType *prev = NULL;
 	VTIMER_HandleType *returnValue = rootNode;
 	*expiredList = rootNode;
-
 	int64_t delay;
 	uint32_t expiredCount = 0;
 
-	while (curr != NULL)
-	{
-
-		if (curr->active)
-		{
+	while (curr != NULL) {
+		if (curr->active) {
 			uint32_t current_machine_time;
 			delay = curr->expiryTime - _get_system_time_and_machine(&RADIO_TIMER_Context, &current_machine_time);
 
-			if (delay > 5)   /*TBR*/
-			{
-				/* End of expired timers list*/
-				break;
-			}
+			if (delay > 5) { break; }
 		}
 
 		prev = curr;
@@ -450,14 +467,11 @@ static VTIMER_HandleType *check_callbacks(VTIMER_HandleType *rootNode, VTIMER_Ha
 		expiredCount++;
 	}
 
-	if (expiredCount)
-	{
+	if (expiredCount) {
 		/* Some timers expired */
 		prev->next = NULL;
 		returnValue = curr;
-	}
-	else
-	{
+	} else {
 		/* No timer expired */
 		*expiredList = NULL;
 	}
@@ -576,6 +590,7 @@ static VTIMER_HandleType *remove_timer_in_queue(VTIMER_HandleType *rootNode, VTI
 	return returnValue;
 }
 
+// start TODO
 
 void HAL_RADIO_TIMER_StopVirtualTimer(VTIMER_HandleType *timerHandle)
 {
@@ -596,7 +611,6 @@ void HAL_RADIO_TIMER_StopVirtualTimer(VTIMER_HandleType *timerHandle)
 		RADIO_TIMER_Context.rootNode = rootNode;
 	}
 }
-
 
 static VTIMER_HandleType *_remove_timer_in_queue(VTIMER_HandleType *rootNode, VTIMER_HandleType *handle)
 {

@@ -11,6 +11,14 @@ SECTIONS {
 		_data_end = .;
 	} > SRAM AT > FLASH
 
+	.bss.RF_RAM : {
+		. = ALIGN(4);
+		_RF_RAM_start = .;
+		KEEP(*(.bss.RF_RAM))
+		. = ALIGN(4);
+		_RF_RAM_end = .;
+	} > SRAM
+
 	.bss ALIGN(4) (NOLOAD) : {
 		_bss_start = .;
 		*(.bss)

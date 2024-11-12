@@ -87,7 +87,7 @@ target_link_libraries(${PROJECT_NAME}
     -T${LINKER_SCRIPT}
     -nostartfiles
     m
-    # -nostdlib
+    #-nostdlib
 )
 target_link_libraries(${PROJECT_NAME} ${BLE_STACK})
 

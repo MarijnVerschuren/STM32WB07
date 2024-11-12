@@ -1,57 +1,13 @@
-/**
-  ******************************************************************************
-  * @file    bleplat_cntr.h
-  * @author  GPM WBL Application team
-  * @brief   This file contains the interface of the Bluetooth LE platform layer
-  *          (lower interface of the Bluetooth LE stack library).
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-
 #ifndef BLEPLAT_CNTR_H__
 #define BLEPLAT_CNTR_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Includes ------------------------------------------------------------------*/
-#include <stdint.h>
-
-/** @addtogroup BLEPLAT_CNTR_Peripheral  BLE CONTROLLER
- * @{
- */
-
-/** @defgroup BLEPLAT_CNTR_Exported_Types Exported Types
- * @{
- */
+#include "RF.h"
 
 
-/* Enumerated values used to report the RNG result status after a process */
-typedef enum
-{
+typedef enum {
 	BLEPLAT_CNTR_SUCCESS     =  0,
 	BLEPLAT_CNTR_ERROR,
 	BLEPLAT_CNTR_ERROR_TIMEOUT
 } BLEPLAT_CNTR_ResultStatus;
-
-
-typedef struct {
-	volatile uint32_t WORD0;
-	volatile uint32_t WORD1;
-	volatile uint32_t WORD2;
-	volatile uint32_t WORD3;
-	volatile uint32_t WORD4;
-} BLEPLAT_CNTR_TXRXPACK_TypeDef;
 
 typedef enum
 {
@@ -60,29 +16,7 @@ typedef enum
 	BLEPLAT_CNTR_TxTx,
 	BLEPLAT_CNTR_RxRx
 } BLEPLAT_CNTR_Transaction;
-/**
- * @}
- */
 
-/** @defgroup BLEPLAT_CNTR_Exported_Constants  Exported Constants
- * @{
- */
-
-/**
- * @}
- */
-
-/** @defgroup BLEPLAT_CNTR_Exported_Macros           Exported Macros
- * @{
- */
-
-/**
- * @}
- */
-
-/** @defgroup BLEPLAT_CNTR_Exported_Functions        Exported Functions
- * @{
- */
 BLEPLAT_CNTR_ResultStatus BLEPLAT_CNTR_Init(void);
 
 BLEPLAT_CNTR_ResultStatus BLEPLAT_CNTR_Deinit(void);
@@ -141,41 +75,41 @@ uint32_t BLEPLAT_CNTR_IntGetIntStatusTxOk(uint32_t x);
 uint32_t BLEPLAT_CNTR_IntGetIntStatusTxRxSkip(uint32_t x);
 uint32_t BLEPLAT_CNTR_IntGetIntStatusTxError1(uint32_t x);
 uint32_t BLEPLAT_CNTR_IntGetIntStatusTxError3(uint32_t x);
-void BLEPLAT_CNTR_PacketClrCrcinitSel(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketClrCteSamplingEn(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketClrIncChan(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketClrPllTrig(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketDisableWhitening(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-uint8_t BLEPLAT_CNTR_PacketGetCteSamplingEn(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-uint8_t* BLEPLAT_CNTR_PacketGetDataPtr(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketInitTo0(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetAdvPduFormat(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetCrcinitSel(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetCteSamplingEn(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetDataPduFormat(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetDataPtr(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP, void* dataP);
-void BLEPLAT_CNTR_PacketSetIncChan(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntCrcErr(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntDone(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntRcvOk(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntTimeout(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntTrigRcv(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetIntTxOk(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetKeepsemareq(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetNextPtr(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP, BLEPLAT_CNTR_TXRXPACK_TypeDef* packetNextP);
-void BLEPLAT_CNTR_PacketSetNextRxMode(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetNextSlot(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP, uint8_t slot);
-void BLEPLAT_CNTR_PacketSetNextTxMode(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetNsEn(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetPllTrig(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetRxReady(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetTimeout(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP, uint32_t x);
-void BLEPLAT_CNTR_PacketSetTimer2Active(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetTimerTrigDone(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetTimerTrigRcv(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
-void BLEPLAT_CNTR_PacketSetTxReady(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
+void BLEPLAT_CNTR_PacketClrCrcinitSel(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketClrCteSamplingEn(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketClrIncChan(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketClrPllTrig(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketDisableWhitening(TXRXPACK_STATE_t* packetP);
+uint8_t BLEPLAT_CNTR_PacketGetCteSamplingEn(TXRXPACK_STATE_t* packetP);
+uint8_t* BLEPLAT_CNTR_PacketGetDataPtr(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketInitTo0(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetAdvPduFormat(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetCrcinitSel(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetCteSamplingEn(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetDataPduFormat(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetDataPtr(TXRXPACK_STATE_t* packetP, void* dataP);
+void BLEPLAT_CNTR_PacketSetIncChan(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntCrcErr(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntDone(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntRcvOk(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntTimeout(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntTrigRcv(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetIntTxOk(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetKeepsemareq(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetNextPtr(TXRXPACK_STATE_t* packetP, TXRXPACK_STATE_t* packetNextP);
+void BLEPLAT_CNTR_PacketSetNextRxMode(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetNextSlot(TXRXPACK_STATE_t* packetP, uint8_t slot);
+void BLEPLAT_CNTR_PacketSetNextTxMode(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetNsEn(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetPllTrig(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetRxReady(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetTimeout(TXRXPACK_STATE_t* packetP, uint32_t x);
+void BLEPLAT_CNTR_PacketSetTimer2Active(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetTimerTrigDone(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetTimerTrigRcv(TXRXPACK_STATE_t* packetP);
+void BLEPLAT_CNTR_PacketSetTxReady(TXRXPACK_STATE_t* packetP);
 void BLEPLAT_CNTR_SetRadioConfig(uint8_t* value);
-void BLEPLAT_CNTR_SetRcvLen(BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP, uint32_t rcvLen);
+void BLEPLAT_CNTR_SetRcvLen(TXRXPACK_STATE_t* packetP, uint32_t rcvLen);
 void BLEPLAT_CNTR_SmCteOff(uint8_t smNo);
 void BLEPLAT_CNTR_SmCteOn(uint8_t smNo);
 void BLEPLAT_CNTR_SmEnRadioConfig(uint8_t smNo, uint32_t enable);
@@ -194,13 +128,13 @@ uint8_t BLEPLAT_CNTR_SmGetEncStatus(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetHopIncr(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetMode(uint8_t smNo);
 uint8_t* BLEPLAT_CNTR_SmGetPrevRxPacketDataPtr(uint8_t smNo);
-BLEPLAT_CNTR_TXRXPACK_TypeDef* BLEPLAT_CNTR_SmGetPrevRxPacketPtr(uint8_t smNo) ;
+TXRXPACK_STATE_t* BLEPLAT_CNTR_SmGetPrevRxPacketPtr(uint8_t smNo) ;
 uint8_t* BLEPLAT_CNTR_SmGetPrevTxPacketDataPtr(uint8_t smNo);
-BLEPLAT_CNTR_TXRXPACK_TypeDef* BLEPLAT_CNTR_SmGetPrevTxPacketPtr(uint8_t smNo);
+TXRXPACK_STATE_t* BLEPLAT_CNTR_SmGetPrevTxPacketPtr(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetRemapChan(uint8_t smNo);
 void BLEPLAT_CNTR_SmGetRxCount(uint8_t smNo, uint32_t* packetCount);
 uint8_t BLEPLAT_CNTR_SmGetRxPhy(uint8_t smNo);
-BLEPLAT_CNTR_TXRXPACK_TypeDef* BLEPLAT_CNTR_SmGetTxPacketPtr(uint8_t smNo);
+TXRXPACK_STATE_t* BLEPLAT_CNTR_SmGetTxPacketPtr(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetTxPhy(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetTxPwr(uint8_t smNo);
 uint8_t BLEPLAT_CNTR_SmGetUnmappedChan(uint8_t smNo);
@@ -224,12 +158,12 @@ void BLEPLAT_CNTR_SmSetRemapChan(uint8_t smNo, uint8_t chan);
 void BLEPLAT_CNTR_SmSetRxCount(uint8_t smNo, uint32_t* packetCount);
 void BLEPLAT_CNTR_SmSetRxCountDirectionBit(uint8_t smNo);
 void BLEPLAT_CNTR_SmSetRxMode(uint8_t smNo);
-void BLEPLAT_CNTR_SmSetRxPacketPtr(uint8_t smNo, BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
+void BLEPLAT_CNTR_SmSetRxPacketPtr(uint8_t smNo, TXRXPACK_STATE_t* packetP);
 void BLEPLAT_CNTR_SmSetRxPhy(uint8_t smNo, uint8_t rxPhy);
 void BLEPLAT_CNTR_SmSetTxCount(uint8_t smNo, uint32_t* packetCount);
 void BLEPLAT_CNTR_SmSetTxCountDirectionBit(uint8_t smNo);
 void BLEPLAT_CNTR_SmSetTxMode(uint8_t smNo);
-void BLEPLAT_CNTR_SmSetTxPacketPtr(uint8_t smNo, BLEPLAT_CNTR_TXRXPACK_TypeDef* packetP);
+void BLEPLAT_CNTR_SmSetTxPacketPtr(uint8_t smNo, TXRXPACK_STATE_t* packetP);
 void BLEPLAT_CNTR_SmSetTxPhy(uint8_t smNo, uint8_t txPhy);
 void BLEPLAT_CNTR_SmEnTxHp(uint8_t smNo, uint8_t enable);
 void BLEPLAT_CNTR_SmSetTxPwr(uint8_t smNo, uint8_t paLevel);
@@ -241,19 +175,6 @@ uint32_t BLEPLAT_CNTR_TimeDiff(uint32_t x, uint32_t y);
 uint8_t BLEPLAT_CNTR_DemodDelaySt(uint8_t RxPHY);
 uint32_t BLEPLAT_CNTR_GetTimer2TimeoutForIfs(uint32_t T_Ifs, BLEPLAT_CNTR_Transaction Transaction, uint8_t Cal_Enabled);
 
-
-/**
-  * @}
-  */
-
-
-/**
- * @}
- */
-
-#ifdef __cplusplus
-}
-#endif
 
 
 #endif /* ! BLEPLAT_H__ */

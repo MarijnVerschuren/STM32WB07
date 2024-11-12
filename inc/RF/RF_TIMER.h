@@ -61,8 +61,7 @@ typedef void (*VTIMER_CallbackType)(void *);
 /**
   * @brief VIRTUAL TIMER handle Structure definition
   */
-typedef struct VTIMER_HandleTypeS
-{
+typedef struct VTIMER_HandleTypeS {
 	uint64_t expiryTime; /*!< Managed internally when the timer is started */
 	VTIMER_CallbackType callback; /*!< Pointer to the user callback */
 	uint8_t active; /*!< Managed internally when the timer is started */
@@ -142,6 +141,8 @@ uint64_t _get_system_time_and_machine(RADIO_TIMER_ContextTypeDef *context, uint3
 void _check_radio_activity(RADIO_TIMER_RadioHandleTypeDef *timerHandle, uint8_t *expired);
 void _set_controller_as_host(void);
 void _virtualTimeBaseEnable(uint8_t state);
+uint32_t RADIO_TIMER_ClearRadioTimerValue(void);
+void HAL_RADIO_TIMER_StopVirtualTimer(VTIMER_HandleType *timerHandle);
 
 void radio_timer_init(void);
 void RADIO_TIMER_Tick(void);
