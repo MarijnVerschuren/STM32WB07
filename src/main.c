@@ -10,10 +10,7 @@
 #include "SPI.h"
 #include "PKA.h"
 
-#include "RF/BLE.h"
-#include "RF/RF.h"
-#include "RF/RF_TIMER.h"
-
+#include "init.h"
 
 /*!<
  * variables
@@ -97,10 +94,9 @@ void main(void) {
 	uint32_t rn = RNG_generate();
 
 	/*!< BLE */
-	//radio_init();
-	//radio_timer_init();
-	//pka_init();
-	//MX_APPE_Init();
+	MX_RADIO_Init();
+	MX_RADIO_TIMER_Init();
+	MX_APPE_Init();
 
 
 	/*!< watchdog */

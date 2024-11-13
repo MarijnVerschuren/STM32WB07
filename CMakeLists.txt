@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 # project name
 project(STM32WB07 C ASM)
@@ -47,11 +47,12 @@ add_compile_options(
 
 include_directories(
     "inc/"
+    "lib/RF/inc"
 )
 
 link_directories(
     ${CMAKE_SOURCE_DIR}
-    "lib/"
+    "lib/RF/bin/"
 )
 
 # list of modules to build final firmware
@@ -74,18 +75,35 @@ add_executable(${PROJECT_NAME}
     src/SPI.c
     src/main.c
 
-    src/RF/RF.s
-    src/PKA.c
-    src/RF/RF.c
-    src/WAKEUP.c
-    src/RF/RF_TIMER.c
-    src/RF/BLE.c
-    src/RF/bleplat.c
+    lib/RF/src/RF.s
+    lib/RF/src/cpu_context_switch.s
+    lib/RF/src/init.c
+    lib/RF/src/stm32wb0x_hal_radio.c
+    lib/RF/src/stm32wb0x_hal_msp.c
+    lib/RF/src/stm32wb0x_hal_radio_timer.c
+    lib/RF/src/stm32wb0x_hal_cortex.c
+    lib/RF/src/stm32wb0x_hal_rcc.c
+    lib/RF/src/stm32wb0x_hal_rcc_ex.c
+    lib/RF/src/stm32wb0x_hal_pwr.c
+    lib/RF/src/stm32wb0x_hal_pwr_ex.c
+    lib/RF/src/stm32wb0x_hal_uart.c
+    lib/RF/src/stm32wb0x_hal_uart_ex.c
+    lib/RF/src/stm32wb0x_hal_dma.c
+    lib/RF/src/stm32wb0x_hal.c
+    lib/RF/src/system_stm32wb0x.c
+    lib/RF/src/stm32wb0x_hal_gpio.c
+    lib/RF/src/app_entry.c
+    lib/RF/src/stm32_lpm.c
+    lib/RF/src/stm32wb0x_nucleo.c
+    lib/RF/src/stm32_lpm_if.c
+    lib/RF/src/device_context_switch.c
+    lib/RF/src/osal.c
 )
 target_link_libraries(${PROJECT_NAME}
     ${CPU_OPTIONS}
     -T${LINKER_SCRIPT}
     -nostartfiles
+    -nolibc
     m
     #-nostdlib
 )

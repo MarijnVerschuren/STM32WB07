@@ -3,6 +3,13 @@ SECTIONS {
 	_data_load = LOADADDR(.data);
 	. = ORIGIN(SRAM);
 
+	.RF_RAM ALIGN(4) : {
+		_RF_RAM_start = .;
+		KEEP(*(.RF_RAM))
+		. = ALIGN(4);
+		_RF_RAM_end = .;
+	} > SRAM
+
 	.data ALIGN(4) : {
 		_data_start = .;
 		*(.data)
@@ -10,14 +17,6 @@ SECTIONS {
 		. = ALIGN(4);
 		_data_end = .;
 	} > SRAM AT > FLASH
-
-	.bss.RF_RAM : {
-		. = ALIGN(4);
-		_RF_RAM_start = .;
-		KEEP(*(.bss.RF_RAM))
-		. = ALIGN(4);
-		_RF_RAM_end = .;
-	} > SRAM
 
 	.bss ALIGN(4) (NOLOAD) : {
 		_bss_start = .;

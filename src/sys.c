@@ -7,20 +7,20 @@
 /*!<
  * constants
  * */
-extern const uint32_t HSE_clock_frequency =		32000000;
-extern const uint32_t HSI_clock_frequency =		64000000;
-extern const uint32_t PLL64M_clock_frequency =	64000000;
-extern const uint32_t LSE_clock_frequency =		32768;
+const uint32_t HSE_clock_frequency =	32000000;
+const uint32_t HSI_clock_frequency =	64000000;
+const uint32_t PLL64M_clock_frequency =	64000000;
+const uint32_t LSE_clock_frequency =	32768;
 
 
 /*!<
  * clock variables
  * */
-extern uint32_t LSI_clock_frequency =	32000;
-extern uint32_t LS_clock_frequency =	32000;
-extern uint32_t SYS_clock_frequency =	16000000;
+uint32_t LSI_clock_frequency =	32000;
+uint32_t LS_clock_frequency =	32000;
+uint32_t SYS_clock_frequency =	16000000;
 
-volatile extern uint64_t tick = 0;
+volatile uint64_t tick = 0;
 
 
 /*!<
