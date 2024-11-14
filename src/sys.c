@@ -96,7 +96,7 @@ void sys_init(uint32_t flags) {
 		(sys_config.IO_boost_enable << 17U)		|
 		(sys_config.LS_clk_src << 15U)			|
 		(sys_config.SMPS_clk_speed << 12U)		|
-		//(sys_config.SYS_clk_speed << 5U)		|
+		//(sys_config.SYS_clk_speed << 5U)		| // TODO should this be commented out?
 		(sys_config.HSI_BLOCK_disable << 2U)	|
 		(sys_config.SYS_clk_src << 1U)			|
 		(sys_config.SMPS_clk_invert)

@@ -93,7 +93,8 @@ void main(void) {
 	enable_RNG();
 	uint32_t rn = RNG_generate();
 
-	/*!< BLE */
+	/*!< RF */
+	PeriphCommonClock_Config();
 	MX_RADIO_Init();
 	MX_RADIO_TIMER_Init();
 	MX_APPE_Init();
@@ -118,6 +119,8 @@ void main(void) {
 	uint64_t prev = tick;
 	uint32_t dt = 0;
 	for(;;) {
+		MX_APPE_Process();
+		MX_APPE_Idle();
 		if (tick - prev > 100) {
 			prev = tick;
 			USART_write(USART1, (void*)&timestamp, 4, 10);
@@ -126,12 +129,12 @@ void main(void) {
 			GPIO_write(GPIOA, 4, 1);
 		}
 
-		GPIO_write(GPIOB, 0, 1);
-		GPIO_write(GPIOB, 4, 1);
-		GPIO_write(GPIOB, 2, 1);
+		GPIO_toggle(GPIOB, 0);
+		GPIO_toggle(GPIOB, 4);
+		GPIO_toggle(GPIOB, 2);
 
-		if(status & 0b01U) { LED_sweep(0); }
-		if(status & 0b10U) { LED_sweep(1); }
+		//if(status & 0b01U) { LED_sweep(0); }
+		//if(status & 0b10U) { LED_sweep(1); }
 
 		//WDG_tick();
 	}

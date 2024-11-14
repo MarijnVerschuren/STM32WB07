@@ -8,5 +8,8 @@
 void MX_RADIO_Init(void);
 void MX_RADIO_TIMER_Init(void);
 void MX_APPE_Init(void);
+void MX_APPE_Process(void);
+void MX_APPE_Idle(void);
+void PeriphCommonClock_Config(void);
 
 #endif //STM32WB07_INIT_H

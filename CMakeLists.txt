@@ -7,7 +7,8 @@ project(STM32WB07 C ASM)
 set(CMAKE_TOOLCHAIN_FILE "cmake/arm-none-eabi.cmake")
 
 # select linker script
-set(LINKER_SCRIPT "lnk/STM32WB07.ld")
+#set(LINKER_SCRIPT "lnk/STM32WB07.ld")
+set(LINKER_SCRIPT "lnk/test.ld")
 set(BLE_STACK "ble_stack.a")
 
 # define CPU OPTIONS
@@ -98,14 +99,15 @@ add_executable(${PROJECT_NAME}
     lib/RF/src/stm32_lpm_if.c
     lib/RF/src/device_context_switch.c
     lib/RF/src/osal.c
+    lib/RF/src/syscalls.c
+    lib/RF/src/sysmem.c
+    lib/RF/src/stm32wb0x_it.c
 )
 target_link_libraries(${PROJECT_NAME}
     ${CPU_OPTIONS}
     -T${LINKER_SCRIPT}
     -nostartfiles
-    -nolibc
     m
-    #-nostdlib
 )
 target_link_libraries(${PROJECT_NAME} ${BLE_STACK})
 

@@ -762,8 +762,7 @@ typedef struct
   * @brief Radio Global State Machine description
   */
 
-typedef struct
-{
+typedef struct {
   volatile uint32_t RADIOCONFIGPTR;
   volatile uint8_t BYTE4;
   volatile uint8_t WAKEUPINITDELAY;

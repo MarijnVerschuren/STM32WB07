@@ -92,7 +92,7 @@ void MX_APPE_Init(void) {
   BSP_LED_Init(LD1);
   BSP_LED_Init(LD2);
   BSP_LED_Init(LD3);
-  
+
   COM_InitTypeDef COM_Init = {0};
 
   COM_Init.BaudRate= 115200;
@@ -175,10 +175,10 @@ void MX_APPE_Process(void)
   
   /* USER CODE BEGIN MX_APPE_Process_2 */
   uint8_t ret = SUCCESS_0;
-  
+
   if(sendNewPacket){
     sendNewPacket = FALSE;
-    ret =  HAL_RADIO_SendPacketWithAck(24, TX_WAKEUP_TIME, sendData, receivedData, RX_TIMEOUT_ACK, MAX_LL_PACKET_LENGTH, HAL_RADIO_Callback);
+	  ret =  HAL_RADIO_SendPacketWithAck(24, TX_WAKEUP_TIME, sendData, receivedData, RX_TIMEOUT_ACK, MAX_LL_PACKET_LENGTH, HAL_RADIO_Callback);
     if(ret != SUCCESS_0) {
       printf("ERROR %d (%d)\n",ret, packet_counter);
     }

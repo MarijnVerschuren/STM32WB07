@@ -20,9 +20,11 @@ uint32_t HAL_GetTick(void) {
 }
 
 void MX_RADIO_Init(void) {
-	/* USER CODE BEGIN RADIO_Init 0 */
 
-	/* USER CODE END RADIO_Init 0 */
+	/* TODO Mick Code */
+	RCC->APB2ENR |= (0x02 < 1U);
+	__HAL_RCC_RADIO_CLK_ENABLE();
+	/* TODO Mick Code */
 
 	RADIO_HandleTypeDef hradio = {0};
 
@@ -32,7 +34,6 @@ void MX_RADIO_Init(void) {
 	hradio.Instance = RADIO;
 	HAL_RADIO_Init(&hradio);
 	/* USER CODE BEGIN RADIO_Init 2 */
-
 	/* USER CODE END RADIO_Init 2 */
 
 }
@@ -53,4 +54,18 @@ void MX_RADIO_TIMER_Init(void) {
 	RADIO_TIMER_InitStruct.enableInitialCalibration = FALSE;
 	RADIO_TIMER_InitStruct.periodicCalibrationInterval = 0;
 	HAL_RADIO_TIMER_Init(&RADIO_TIMER_InitStruct);
+}
+
+void PeriphCommonClock_Config(void) {
+	RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+
+	/** Initializes the peripherals clock
+	*/
+	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SMPS;
+	PeriphClkInitStruct.SmpsDivSelection = RCC_SMPSCLK_DIV4;
+
+	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
